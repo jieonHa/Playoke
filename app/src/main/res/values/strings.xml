@@ -1,7 +1,3 @@
 <resources>
     <string name="app_name">Playoke</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">홈</string>
-    <string name="title_search">검색</string>
-    <string name="title_mylibrary">내 라이브러리</string>
 </resources>
