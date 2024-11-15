@@ -13,13 +13,20 @@
         android:theme="@style/Theme.Playoke"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".AddToPlaylistActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/ActionBar.Theme.Playoke"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Base.Theme.Playoke"
+            android:exported="true">
+
         </activity>
     </application>
 
