@@ -6,7 +6,7 @@ plugins {
 android {
     namespace = "com.example.playoke"
     compileSdk = 35
-
+    viewBinding.isEnabled=true
     defaultConfig {
         applicationId = "com.example.playoke"
         minSdk = 24
