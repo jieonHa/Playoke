@@ -36,7 +36,8 @@
             android:src="@android:drawable/ic_menu_search"
             app:tint="@color/dark_grey"
             android:layout_centerVertical="true"
-            android:layout_marginRight="24dp" />
+            android:layout_marginRight="24dp"
+            android:background="#00000000"/>
 
     </RelativeLayout>
     <LinearLayout
@@ -52,7 +53,8 @@
             android:layout_height="22dp"
             android:src="@android:drawable/ic_menu_add"
             app:tint="@color/blue"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginLeft="15dp"
+            android:background="#00000000"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
