@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center_vertical">
     <ImageButton
-        android:id="@+id/idBtnDismiss"
+        android:id="@+id/btnDismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_chevron_down"
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:paddingRight="40dp"
         android:paddingLeft="40dp">
         <RelativeLayout
@@ -43,23 +43,123 @@
                     android:text="Maroon 5"
                     android:textSize="@dimen/subtitle"
                     android:textColor="@color/blue"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_marginBottom="30dp"/>
             </LinearLayout>
         </RelativeLayout>
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
-
-            <ImageView
+            android:layout_height="480dp"
+            android:scrollbars="none">
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/img_music"
-                android:layout_marginBottom="25dp"/>
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_music"
+                    android:alpha="0.2"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yeah"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🎵"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sunday morning, rain is falling"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Steal some covers, share some skin (I like that)"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Clouds are shrouding us in moments unforgettable"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="You twist to fit the mold that I am in"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="But things just get so crazy"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Living life gets hard to do"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="And I would gladly hit the road, get up and go if I knew"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="That someday It would lead me back to you"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="That someday it would lead me back to you (oh, someday)"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/title"
+                        android:layout_marginBottom="18dp"
+                        android:gravity="center"/>
+                </LinearLayout>
 
-        </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,7 +168,8 @@
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:paddingRight="40dp"
-        android:paddingLeft="40dp">
+        android:paddingLeft="40dp"
+        android:layout_marginBottom="35dp">
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
