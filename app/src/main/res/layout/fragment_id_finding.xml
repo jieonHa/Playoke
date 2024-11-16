@@ -87,9 +87,17 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="30dp"
             android:backgroundTint="#0802AE"
             android:text="아이디 찾기" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="코드 확인 후 아이디 출력 영역"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </FrameLayout>
