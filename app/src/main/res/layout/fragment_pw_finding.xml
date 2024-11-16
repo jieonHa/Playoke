@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".idFinding">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="50dp"
+            android:text="비밀번호 찾기-탭으로 구현" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperText="이름을 입력해주세요.">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usr_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이름" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperText="이메일을 입력해주세요.">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usr_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="e-mail" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:helperText="아이디를 입력해주세요.">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usr_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ID" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/sends_mail_button"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="30dp"
+            android:backgroundTint="#0802AE"
+            android:text="임시 비밀번호 전송" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 이메일로 임시 비밀번호를 전송하였습니다."
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+</FrameLayout>

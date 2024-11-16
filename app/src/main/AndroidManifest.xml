@@ -13,21 +13,39 @@
         android:theme="@style/Theme.Playoke"
         tools:targetApi="31">
         <activity
-            android:name=".AddToPlaylistActivity"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/ActionBar.Theme.Playoke"
-            android:exported="true">
+            android:name=".SignUp"
+            android:exported="false" />
+        <activity
+            android:name=".SignIn"
+            android:exported="false" />
+        <activity
+            android:name=".logo"
+            android:exported="false" />
+        <activity
+            android:name=".AccessPermission"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Base.Theme.Playoke">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Base.Theme.Playoke"
-            android:exported="true">
-
-        </activity>
+            android:name=".LyricsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MusicActivity"
+            android:exported="true"/>
+            
+        <activity
+            android:name=".AddToPlaylistActivity"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/ActionBar.Theme.Playoke" />
     </application>
 
 </manifest>
