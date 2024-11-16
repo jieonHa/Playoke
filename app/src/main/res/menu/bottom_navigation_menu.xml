@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="홈"/>
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/baseline_search_24"
+        android:title="검색"/>
+    <item
+        android:id="@+id/nav_library"
+        android:icon="@drawable/baseline_library_music_24"
+        android:title="내 라이브러리"/>
+</menu>
