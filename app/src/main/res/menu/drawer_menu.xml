@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_id"
+        android:title="아이디"
+        android:icon="@drawable/baseline_account_circle_24" />
+    <item
+        android:id="@+id/nav_record"
+        android:title="기록"
+        android:icon="@drawable/baseline_access_time_24" />
+    <item
+        android:id="@+id/nav_setting"
+        android:title="설정"
+        android:icon="@drawable/baseline_settings_24" />
+    <item
+        android:id="@+id/nav_help"
+        android:title="도움말"
+        android:icon="@drawable/baseline_help_outline_24" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="로그아웃"
+        android:icon="@drawable/baseline_logout_24" />
+</menu>
