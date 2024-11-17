@@ -67,6 +67,7 @@
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
             <SeekBar
+                android:id="@+id/seek_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:progressTint="@color/blue"
@@ -77,6 +78,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
                 <TextView
+                    android:id="@+id/elapsed_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.00"

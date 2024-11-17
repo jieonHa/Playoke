@@ -3,18 +3,22 @@ package com.example.playoke
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.os.Handler
+import android.os.Looper
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.playoke.databinding.ActivityLyricsBinding
+import com.example.playoke.databinding.ActivityMusicBinding
 
 class LyricsActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private var play = false
+    private lateinit var binding: ActivityLyricsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        val binding = ActivityLyricsBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityLyricsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnDismiss.setOnClickListener{
@@ -47,4 +51,5 @@ class LyricsActivity : AppCompatActivity() {
             }
         }
     }
+
 }
