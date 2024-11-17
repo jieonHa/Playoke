@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<androidx.fragment.app.FragmentContainerView android:name="com.example.playoke.LibraryFragment"-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    layout_width="match_parent"-->
+<!--    layout_height="match_parent"/>-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -29,9 +33,9 @@
             android:id="@+id/toolbarAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Playoke!"
+            android:text="내 라이브러리"
             android:textColor="@color/blue"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:layout_gravity="start"
             android:padding="10dp"
@@ -46,15 +50,12 @@
             android:layout_gravity="end" />
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- 추천 앨범/플레이리스트 섹션 수정 필요-->
+    <!-- 리사이클러뷰 -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewPlaylists"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:padding="16dp"
-        android:scrollbars="vertical" />
+        android:layout_weight="1" />
 
     <!-- 현재 재생 중인 음악 바 -->
     <LinearLayout
@@ -121,14 +122,14 @@
         android:layout_margin="0dp"
         android:thumb="@android:color/transparent" /> <!-- thumb 숨기기 -->
 
-
     <!-- 하단 네비게이션 바 -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         app:backgroundTint="@android:color/system_accent3_10"
         app:menu="@menu/bottom_navigation_menu" />
 
 </LinearLayout>
+
+

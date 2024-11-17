@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.playoke.databinding.FragmentLibraryBinding
 import com.example.playoke.placeholder.PlaceholderContent
+
 
 /**
  * A fragment representing a list of Items.
@@ -16,40 +19,38 @@ import com.example.playoke.placeholder.PlaceholderContent
 class LibraryFragment : Fragment() {
 
     private var columnCount = 1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
+    lateinit var binding: FragmentLibraryBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_library_list, container, false)
+        binding = FragmentLibraryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
-            }
-        }
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val songs = listOf(
+            Song("Song Title 1", 10, R.drawable.img_music),
+            Song("Song Title 2", 10, R.drawable.img_music),
+            Song("Song Title 3", 10, R.drawable.img_music)
+        )
+
+        binding.recyclerView.layoutManager=LinearLayoutManager(context)
+        binding.recyclerView.adapter=SongAdapter(songs)
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     companion object {
-
-        // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
             LibraryFragment().apply {
@@ -59,3 +60,6 @@ class LibraryFragment : Fragment() {
             }
     }
 }
+
+data class Song(val title: String, val numberOfSongs: Int, val coverImageResId: Int)
+
