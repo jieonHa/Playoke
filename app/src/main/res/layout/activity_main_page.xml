@@ -27,26 +27,26 @@
                 android:id="@+id/toolbarLogo"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:src="@drawable/minilogo"
+                android:layout_gravity="start"
                 android:contentDescription="App Logo"
-                android:layout_gravity="start" />
+                android:src="@drawable/minilogo" />
 
             <!-- 앱 이름 -->
             <ImageView
                 android:id="@+id/toolbarLogo"
                 android:layout_width="150dp"
                 android:layout_height="54dp"
+                android:layout_gravity="start"
                 android:padding="10dp"
-                android:src="@drawable/playokelogo"
-                android:layout_gravity="start" />
+                android:src="@drawable/playokelogo" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/toolbarImageButton"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
+                android:layout_gravity="end"
                 android:background="@drawable/baseline_add_36"
-                android:padding="16dp"
-                android:layout_gravity="end" />
+                android:padding="16dp" />
         </androidx.appcompat.widget.Toolbar>
 
         <!-- 추천 앨범/플레이리스트 섹션 수정 필요-->
@@ -56,8 +56,10 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="16dp"
-            android:padding="16dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:scrollbars="vertical" />
+
 
         <!-- 현재 재생 중인 음악 바 -->
         <LinearLayout
@@ -134,16 +136,13 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!-- 네비게이션 뷰 -->
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:menu="@menu/drawer_menu"
-            app:headerLayout="@layout/navigation_header"/>
-    </LinearLayout>
+    <!-- 네비게이션 뷰 -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_drawer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
