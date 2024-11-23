@@ -58,6 +58,7 @@
                         android:layout_marginBottom="20dp"/>
                 </LinearLayout>
                 <ImageButton
+                    android:id="@+id/addToPlaylist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@android:drawable/ic_menu_add"
@@ -150,6 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="가사"
+                android:textColor="@color/white"
                 android:backgroundTint="@color/blue"
                 android:layout_gravity="center"
                 />

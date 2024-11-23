@@ -24,7 +24,7 @@
 
             <!-- 로고 이미지 -->
             <ImageView
-                android:id="@+id/toolbarLogo"
+                android:id="@+id/toolbarLogo1"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:src="@drawable/minilogo"
@@ -33,7 +33,7 @@
 
             <!-- 앱 이름 -->
             <ImageView
-                android:id="@+id/toolbarLogo"
+                android:id="@+id/toolbarLogo2"
                 android:layout_width="150dp"
                 android:layout_height="54dp"
                 android:padding="10dp"
@@ -97,6 +97,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/musicBottomSheetTrigger"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"

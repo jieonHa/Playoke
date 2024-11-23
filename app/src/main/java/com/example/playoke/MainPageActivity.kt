@@ -8,15 +8,17 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.playoke.databinding.ActivityMainPageBinding
 
 class MainPageActivity : AppCompatActivity() {
-    lateinit var binding:ActivityMainPageBinding by lazy { ActivityMainPageBinding.inflate(layoutInflater) }
+    private lateinit var binding: ActivityMainPageBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
         binding.mainDrawerView.setNavigationItemSelectedListener {
             Log.d("son", "nav")
             true
-        }
         }
     }
 }

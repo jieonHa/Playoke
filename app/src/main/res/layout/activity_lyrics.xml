@@ -46,10 +46,6 @@
                     android:layout_marginBottom="30dp"/>
             </LinearLayout>
         </RelativeLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="480dp"
-            android:scrollbars="none">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,6 +57,10 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/img_music"
                     android:alpha="0.2"/>
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="480dp"
+                    android:scrollbars="none">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -156,9 +156,9 @@
                         android:layout_marginBottom="18dp"
                         android:gravity="center"/>
                 </LinearLayout>
+                </ScrollView>
 
             </RelativeLayout>
-        </ScrollView>
 
     </LinearLayout>
     <LinearLayout

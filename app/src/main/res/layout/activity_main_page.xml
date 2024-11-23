@@ -24,7 +24,7 @@
 
             <!-- 로고 이미지 -->
             <ImageView
-                android:id="@+id/toolbarLogo"
+                android:id="@+id/toolbarLogo1"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:layout_gravity="start"
@@ -33,7 +33,7 @@
 
             <!-- 앱 이름 -->
             <ImageView
-                android:id="@+id/toolbarLogo"
+                android:id="@+id/toolbarLogo2"
                 android:layout_width="150dp"
                 android:layout_height="54dp"
                 android:layout_gravity="start"
