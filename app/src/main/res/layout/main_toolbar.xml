@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_main"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    app:titleTextColor="@color/white"
+    android:theme="?attr/actionBarTheme">
+    <!-- 로고 이미지 -->
+    <ImageView
+        android:id="@+id/toolbarLogo1"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:src="@drawable/minilogo"
+        android:contentDescription="App Logo"
+        android:layout_gravity="start" />
+
+    <!-- 앱 이름 -->
+    <ImageView
+        android:id="@+id/toolbarLogo2"
+        android:layout_width="150dp"
+        android:layout_height="54dp"
+        android:padding="10dp"
+        android:src="@drawable/playokelogo"
+        android:layout_gravity="start" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/toolbarImageButton"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@drawable/baseline_add_36"
+        android:padding="16dp"
+        android:layout_gravity="end"
+        android:contentDescription="add_button_description"/>
+
+</androidx.appcompat.widget.Toolbar>

@@ -9,15 +9,24 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.widget.SeekBar
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.playoke.databinding.ActivityMainBinding
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.navigation.NavigationView
+
+private const val TAG_HOME = "home_fragment"
+private const val TAG_SEARCH = "search_fragment"
+private const val TAG_LIBRARY = "library_fragment"
 
 class MainActivity : AppCompatActivity() {
     private var musicService: MusicService? = null
     private var isBound = false
     private var handler: Handler? = null
+
     private lateinit var binding: ActivityMainBinding
 
     private val connection = object : ServiceConnection {
@@ -43,7 +52,38 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //
 
+        // 프래그먼트 전환
+        setFragment(TAG_HOME, HomeFragment())
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> setFragment(TAG_HOME, HomeFragment())
+                R.id.nav_search -> setFragment(TAG_SEARCH, SearchFragment())
+                R.id.nav_library -> setFragment(TAG_LIBRARY, LibraryFragment())
+            }
+            true
+        }
+
+        // 드로어
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        //val navView = findViewById<NavigationView>(R.id.nav_view)
+
+        // ActionBarDrawerToggle 설정 (툴바와 드로어 동기화)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            R.string.open_drawer,
+            R.string.close_drawer
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        // 툴바가 있을 경우 액션바에 드로어 버튼을 표시하도록 설정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+        // 재생바
         handler = Handler(Looper.getMainLooper())
 
         val intent = Intent(this, MusicService::class.java)
@@ -83,14 +123,8 @@ class MainActivity : AppCompatActivity() {
                 startSeekBarUpdate() // Resume updates after interaction
             }
         })
-
-        setSupportActionBar(binding.toolbar)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
+
     private fun updateMusicDuration(){
         binding.seekBar.max = musicService?.getDuration()?:0
     }
@@ -108,5 +142,46 @@ class MainActivity : AppCompatActivity() {
 
     private fun stopSeekBarUpdate() {
         handler?.removeCallbacksAndMessages(null)
+    }
+
+
+    private fun setFragment(tag: String, fragment: Fragment) {
+        val manager: FragmentManager = supportFragmentManager
+        val fragTransaction = manager.beginTransaction()
+
+        if (manager.findFragmentByTag(tag) == null){
+            fragTransaction.add(R.id.mainFrameLayout, fragment, tag)
+        }
+
+        val home = manager.findFragmentByTag(TAG_HOME)
+        val search = manager.findFragmentByTag(TAG_SEARCH)
+        val library = manager.findFragmentByTag(TAG_LIBRARY)
+
+        if (home != null){
+            fragTransaction.hide(home)
+        }
+        if (search != null) {
+            fragTransaction.hide(search)
+        }
+        if (library != null){
+            fragTransaction.hide(library)
+        }
+
+        if (tag == TAG_HOME) {
+            if (home != null) {
+                fragTransaction.show(home)
+            }
+        }
+        else if (tag == TAG_SEARCH) {
+            if (search!=null){
+                fragTransaction.show(search)
+            }
+        }
+        else if (tag == TAG_LIBRARY){
+            if (library != null){
+                fragTransaction.show(library)
+            }
+        }
+        fragTransaction.commitAllowingStateLoss()
     }
 }
