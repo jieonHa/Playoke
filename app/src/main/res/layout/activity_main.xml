@@ -6,145 +6,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 메인 화면 -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/main"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- 상단 앱바 -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <include
+            android:id="@+id/toolbar_main"
+            layout="@layout/main_toolbar"/>
+
+        <FrameLayout
+            android:id="@+id/mainFrameLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:title="Playoke!"
-            app:titleTextColor="@color/blue">
-
-            <!-- 로고 이미지 -->
-            <ImageView
-                android:id="@+id/toolbarLogo1"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
-                android:src="@drawable/minilogo"
-                android:contentDescription="App Logo"
-                android:layout_gravity="start" />
-
-            <!-- 앱 이름 -->
-            <ImageView
-                android:id="@+id/toolbarLogo2"
-                android:layout_width="150dp"
-                android:layout_height="54dp"
-                android:padding="10dp"
-                android:src="@drawable/playokelogo"
-                android:layout_gravity="start" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/toolbarImageButton"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="@drawable/baseline_add_36"
-                android:padding="16dp"
-                android:layout_gravity="end" />
-        </androidx.appcompat.widget.Toolbar>
-
-        <!-- 추천 앨범/플레이리스트 섹션 수정 필요-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewPlaylists"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="16dp"
-            android:padding="16dp"
-            android:scrollbars="vertical" />
+            android:layout_height="match_parent" />
 
         <!-- 현재 재생 중인 음악 바 -->
         <LinearLayout
-            android:id="@+id/musicInfoContainer"
+            android:id="@+id/songProgressBarContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/songImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/img_music"/>
+            android:orientation="vertical"
+            android:backgroundTint="@color/baby_purple"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView">
 
             <LinearLayout
-                android:id="@+id/musicTitleContainer"
-                android:layout_width="wrap_content"
+                android:id="@+id/musicInfoContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="8dp">
-                <TextView
-                    android:id="@+id/songTitle"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/songImage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/img_music"/>
+
+                <LinearLayout
+                    android:id="@+id/musicTitleContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Song Title"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/songArtist"
-                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="8dp">
+                    <TextView
+                        android:id="@+id/songTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Song Title"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/songArtist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Artist Name"
+                        android:textSize="14sp"
+                        android:textColor="#757575" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/musicBottomSheetTrigger"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
-                    android:text="Artist Name"
-                    android:textSize="14sp"
-                    android:textColor="#757575" />
+                    android:gravity="end"
+                    android:orientation="horizontal">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/plusButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="Plus music"
+                        android:background="@drawable/baseline_add_circle_outline_32" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/playButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="Play music"
+                        android:background="@drawable/baseline_play_arrow_32" />
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/musicBottomSheetTrigger"
-                android:layout_width="230dp"
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/plusButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/baseline_add_circle_outline_32" />
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/playButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/baseline_play_arrow_32" />
-            </LinearLayout>
+                android:progressTint="@color/blue"
+                android:max="100"
+                android:progress="30"
+                android:layout_margin="0dp"
+                android:thumb="@android:color/transparent" /> <!-- thumb 숨기기 -->
         </LinearLayout>
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progressTint="@color/blue"
-            android:max="100"
-            android:progress="30"
-            android:layout_margin="0dp"
-            android:thumb="@android:color/transparent" /> <!-- thumb 숨기기 -->
 
         <!-- 하단 네비게이션 바 -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:menu="@menu/bottom_navigation_menu" />
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/bottom_navigation_menu"
+            tools:ignore="MissingConstraints" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!--네비게이션 뷰 -->
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:menu="@menu/drawer_menu"
-            app:headerLayout="@layout/navigation_header"/>
-    </LinearLayout>
+<!--    &lt;!&ndash; 드로어 네비게이션 뷰 &ndash;&gt;-->
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--    android:id="@+id/nav_view"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="match_parent"-->
+<!--    app:headerLayout="@layout/navigation_header"-->
+<!--    app:menu="@menu/drawer_menu" />-->
 
 </androidx.drawerlayout.widget.DrawerLayout>
