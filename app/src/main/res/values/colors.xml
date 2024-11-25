@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="blue">#0600AD</color>
     <color name="dark_grey">#49454f</color>
-    <color name="baby_purple">#FEF7FF</color>
-
+    <color name="baby_purple">@android:color/system_accent3_10</color>
 </resources>
