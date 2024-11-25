@@ -10,44 +10,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- 상단 앱바 -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/libraryToolbar"
+        android:background="?android:attr/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Playoke!"
-        app:titleTextColor="@color/blue">
-
-        <!-- 로고 이미지 -->
-        <ImageView
-            android:id="@+id/toolbarLogo"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:src="@drawable/minilogo"
-            android:contentDescription="App Logo"
-            android:layout_gravity="start" />
-
-        <!-- 앱 이름 -->
-        <TextView
-            android:id="@+id/toolbarAppName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="내 라이브러리"
-            android:textColor="@color/blue"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_gravity="start"
-            android:padding="10dp"
-            android:layout_marginStart="8dp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/toolbarImageButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/baseline_add_36"
-            android:padding="16dp"
-            android:layout_gravity="end" />
-    </androidx.appcompat.widget.Toolbar>
+        app:menu="@menu/menu_main"
+        app:navigationIcon="@drawable/miniminilogo"
+        app:title="내 라이브러리"
+        app:titleTextColor="@color/blue"/>
 
     <!-- 리사이클러뷰 -->
     <androidx.recyclerview.widget.RecyclerView
@@ -55,9 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
+        android:padding="20dp"
         android:scrollbars="vertical"/>
 
 </LinearLayout>

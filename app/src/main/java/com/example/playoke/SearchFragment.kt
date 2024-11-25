@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 class SearchFragment : Fragment() {
@@ -22,6 +23,14 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 툴바 숨기기
+        val activity = activity as AppCompatActivity
+        activity.supportActionBar?.hide() // 툴바 숨기기
     }
 
     companion object {

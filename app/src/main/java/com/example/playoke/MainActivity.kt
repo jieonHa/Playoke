@@ -8,6 +8,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.view.Gravity
+import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var musicService: MusicService? = null
     private var isBound = false
     private var handler: Handler? = null
+    private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var binding: ActivityMainBinding
 
@@ -52,7 +57,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //
+
+        //drawerLayout = findViewById(R.id.drawer_layout)
 
         // 프래그먼트 전환
         setFragment(TAG_HOME, HomeFragment())
@@ -64,24 +70,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        // 드로어
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        //val navView = findViewById<NavigationView>(R.id.nav_view)
-
-        // ActionBarDrawerToggle 설정 (툴바와 드로어 동기화)
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            R.string.open_drawer,
-            R.string.close_drawer
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        // 툴바가 있을 경우 액션바에 드로어 버튼을 표시하도록 설정
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 
         // 재생바
         handler = Handler(Looper.getMainLooper())
@@ -150,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         val fragTransaction = manager.beginTransaction()
 
         if (manager.findFragmentByTag(tag) == null){
-            fragTransaction.add(R.id.mainFrameLayout, fragment, tag)
+            fragTransaction.add(R.id.fragmentContainer, fragment, tag)
         }
 
         val home = manager.findFragmentByTag(TAG_HOME)
