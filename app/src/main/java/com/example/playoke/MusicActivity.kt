@@ -19,6 +19,8 @@ class MusicActivity : AppCompatActivity() {
     private var isBound = false
     private var handler: Handler? = null
     private lateinit var binding: ActivityMusicBinding
+    lateinit var musicName :String
+    lateinit var artistName:String
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -32,6 +34,8 @@ class MusicActivity : AppCompatActivity() {
             } else{
                 binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
             }
+            binding.musicName.setText(musicService!!.musicName)
+            binding.artistName.setText(musicService!!.artistName)
         }
         override fun onServiceDisconnected(name: ComponentName) {
             musicService = null

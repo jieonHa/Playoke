@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "664507521153",
+    "project_id": "playoke-c449e",
+    "storage_bucket": "playoke-c449e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664507521153:android:4fa9bdf43a7811a8521580",
+        "android_client_info": {
+          "package_name": "com.example.playoke"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyixpXbYfHI7IH1MJrOE2vUcQq-1ZMyVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

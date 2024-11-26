@@ -6,8 +6,14 @@ import android.media.MediaPlayer
 import android.os.IBinder
 import android.util.Log
 import android.os.Binder
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import java.io.IOException
 
 class MusicService : Service() {
+    val db = Firebase.firestore
+    var musicName :String = "Unknown Name"
+    var artistName:String = "Unknown Artist"
     private val binder = LocalBinder()
     lateinit var player: MediaPlayer
     private var currentPosition: Int = 0
@@ -18,7 +24,29 @@ class MusicService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        player = MediaPlayer.create(this, R.raw.sunday_morning)
+        player = MediaPlayer()
+        db.collection("musics").document("music-1").get()
+            .addOnSuccessListener{ document->
+                Log.d("test", "yyy")
+                if (document.exists()){
+
+                    musicName = document.getString("name")?:"Unknown Name"
+                    artistName = document.getString("artist")?:"Unknown Artist"
+                    try {
+                        player.reset()
+                        player.setDataSource(document.getString("url"))
+                        player.prepare()
+                        Log.d("HappySuccess","yes!")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                } else{
+                    Log.d("Firestore", "No such document")
+                }
+            }
+            .addOnFailureListener{e->Log.d("error", "error ${e}")}
+        //player = MediaPlayer.create(this, R.raw.sunday_morning)
+
     }
 
     fun isPlaying():Boolean{

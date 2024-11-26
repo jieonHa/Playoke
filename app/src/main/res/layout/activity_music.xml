@@ -42,17 +42,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/musicName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sunday Morning"
+
                         android:textSize="@dimen/title"
                         android:textStyle="bold"
                         android:textColor="@color/blue"
                         android:layout_marginBottom="10dp"/>
                     <TextView
+                        android:id="@+id/artistName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Maroon 5"
+
                         android:textSize="@dimen/subtitle"
                         android:textColor="@color/blue"
                         android:layout_marginBottom="20dp"/>
