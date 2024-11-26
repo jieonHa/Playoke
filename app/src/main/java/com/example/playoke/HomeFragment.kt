@@ -78,6 +78,11 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.show()
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
