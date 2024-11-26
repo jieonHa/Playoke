@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
 
         // 툴바 숨기기
         val activity = activity as AppCompatActivity
-        activity.supportActionBar?.hide() // 툴바 숨기기
+        activity.supportActionBar?.hide()
     }
 
     companion object {

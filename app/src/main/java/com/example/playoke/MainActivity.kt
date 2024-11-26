@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //drawerLayout = findViewById(R.id.drawer_layout)
-
         // 프래그먼트 전환
         setFragment(TAG_HOME, HomeFragment())
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
