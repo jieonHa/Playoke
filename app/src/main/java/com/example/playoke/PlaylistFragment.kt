@@ -5,19 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playoke.databinding.FragmentPlaylistBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [PlaylistFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class PlaylistFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
+    private var columnCount = 1
+    lateinit var binding: FragmentPlaylistBinding
+
+    var ARG_PARAM1 = "param1"
+    var ARG_PARAM2 = "param2"
     private var param1: String? = null
     private var param2: String? = null
 
@@ -35,6 +40,24 @@ class PlaylistFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_playlist, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val songs = listOf(
+            Song("Song Title 1", "Artist1", R.drawable.img_music),
+            Song("Song Title 2", "Artist2", R.drawable.img_music),
+            Song("Song Title 3", "Artist3", R.drawable.img_music)
+        )
+
+        binding.recyclerViewSongs.layoutManager= LinearLayoutManager(context)
+        binding.recyclerViewSongs.adapter=SongAdapter(songs)
+        binding.recyclerViewSongs.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     companion object {
@@ -57,3 +80,5 @@ class PlaylistFragment : Fragment() {
             }
     }
 }
+
+data class Song(val title: String, val artist: String, val coverImageResId: Int)

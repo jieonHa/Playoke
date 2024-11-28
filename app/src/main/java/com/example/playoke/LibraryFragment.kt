@@ -52,7 +52,7 @@ class LibraryFragment : Fragment() {
             drawerLayout.openDrawer(Gravity.LEFT)
         }
 
-        // 메뉴 클릭 리스너 설정 (메뉴 아이템 클릭 시 이벤트 처리)
+        // 메뉴 아이템 클릭 시 이벤트 처리
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.mainMenuAdd -> {
@@ -77,15 +77,15 @@ class LibraryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val songs = listOf(
-            Song("Song Title 1", 10, R.drawable.img_music),
-            Song("Song Title 2", 10, R.drawable.img_music),
-            Song("Song Title 3", 10, R.drawable.img_music)
+        val libraryplaylists = listOf(
+            LibraryPlaylist("Playlist Title 1", 10, R.drawable.img_music),
+            LibraryPlaylist("Playlist Title 2", 10, R.drawable.img_music),
+            LibraryPlaylist("Playlist Title 3", 10, R.drawable.img_music)
         )
 
-        binding.recyclerView.layoutManager=LinearLayoutManager(context)
-        binding.recyclerView.adapter=SongAdapter(songs)
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        binding.recyclerViewPlaylists.layoutManager=LinearLayoutManager(context)
+        binding.recyclerViewPlaylists.adapter=LibraryPlaylistAdapter(libraryplaylists)
+        binding.recyclerViewPlaylists.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
     }
 
     override fun onDestroyView() {
@@ -109,5 +109,5 @@ class LibraryFragment : Fragment() {
     }
 }
 
-data class Song(val title: String, val numberOfSongs: Int, val coverImageResId: Int)
+data class LibraryPlaylist(val title: String, val numberOfSongs: Int, val coverImageResId: Int)
 

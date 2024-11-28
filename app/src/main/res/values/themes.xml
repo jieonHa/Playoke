@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Playoke" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/baby_purple</item>
-        <item name="colorOnPrimary">@color/blue</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="android:statusBarColor">@color/baby_purple</item>
         <item name="android:navigationBarColor">@color/baby_purple</item>
         <!-- Customize your light theme here. -->

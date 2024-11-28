@@ -12,7 +12,7 @@ class SongAdapter(private val songs: List<Song>) : RecyclerView.Adapter<SongAdap
         fun bind(song: Song) {
             binding.imageViewCover.setImageResource(song.coverImageResId)
             binding.textViewTitle.text = song.title
-            binding.textViewArtist.text = song.numberOfSongs.toString()
+            binding.textViewArtist.text = song.artist
             binding.moreButton.setOnClickListener {
                 // Handle 'more' button click
                 Toast.makeText(it.context, "test", Toast.LENGTH_SHORT).show()
