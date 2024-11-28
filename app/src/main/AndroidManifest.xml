@@ -12,22 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Playoke"
         tools:targetApi="31">
+        <activity
+            android:name=".LogoActivity"
+            android:exported="false" />
+
         <service
             android:name=".MusicService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".MainPageActivity"
             android:exported="false" />
         <activity
             android:name=".SignUp"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            />
+        </activity>
         <activity
             android:name=".SignIn"
-            android:exported="false" />
-        <activity
-            android:name=".logo"
             android:exported="false" />
         <activity
             android:name=".AccessPermission"
@@ -35,13 +43,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.Playoke">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Base.Theme.Playoke"></activity>
         <activity
             android:name=".LyricsActivity"
             android:exported="false" />
