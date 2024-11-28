@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.os.IBinder
 import android.util.Log
 import android.os.Binder
+import android.widget.TextView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import java.io.IOException
@@ -14,6 +15,7 @@ class MusicService : Service() {
     val db = Firebase.firestore
     var musicName :String = "Unknown Name"
     var artistName:String = "Unknown Artist"
+    var imageSrc: String = ""
     private val binder = LocalBinder()
     lateinit var player: MediaPlayer
     private var currentPosition: Int = 0
@@ -32,6 +34,7 @@ class MusicService : Service() {
 
                     musicName = document.getString("name")?:"Unknown Name"
                     artistName = document.getString("artist")?:"Unknown Artist"
+                    imageSrc = document.getString("img")?:""
                     try {
                         player.reset()
                         player.setDataSource(document.getString("url"))
@@ -79,6 +82,10 @@ class MusicService : Service() {
 
     fun seekTo(position: Int) {
         player.seekTo(position)
+    }
+
+    fun changeMusicName(title: TextView){
+        title.text = musicName
     }
 
     fun getPlaybackPosition(): Int {

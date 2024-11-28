@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.ImageView
@@ -46,6 +47,11 @@ class MainActivity : AppCompatActivity() {
             } else{
                 binding.playButton.setBackgroundResource(R.drawable.ic_pause_circle_outline)
             }
+            Log.d("Testing", "Service Started")
+            //첫번째에 안 되는 버그 있음. 다른 액티비티 갔다가 돌아와야지만 됨
+            musicService?.changeMusicName(binding.songTitle)
+            //binding.songTitle.text = musicService?.musicName ?: "Unknown Title"
+            binding.songArtist.text = musicService?.artistName ?: "Unknown Artist"
         }
         override fun onServiceDisconnected(name: ComponentName) {
             musicService = null
@@ -58,6 +64,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val intent = Intent(this, MusicService::class.java)
+        bindService(intent, connection, Context.BIND_AUTO_CREATE)
+
+
+
+        handler = Handler(Looper.getMainLooper())
+
         // 프래그먼트 전환
         setFragment(TAG_HOME, HomeFragment())
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -68,12 +81,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        // 재생바
-        handler = Handler(Looper.getMainLooper())
-
-        val intent = Intent(this, MusicService::class.java)
-        bindService(intent, connection, Context.BIND_AUTO_CREATE)
 
         binding.playButton.setOnClickListener{
             if (!(musicService!!.isPlaying())){

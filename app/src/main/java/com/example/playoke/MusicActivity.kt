@@ -4,15 +4,14 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.util.Log
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playoke.databinding.ActivityMusicBinding
+import com.bumptech.glide.Glide
 
 class MusicActivity : AppCompatActivity() {
     private var musicService: MusicService? = null
@@ -34,8 +33,13 @@ class MusicActivity : AppCompatActivity() {
             } else{
                 binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
             }
+
             binding.musicName.setText(musicService!!.musicName)
             binding.artistName.setText(musicService!!.artistName)
+            Glide.with(this@MusicActivity)
+                .load(musicService!!.imageSrc)
+                .into(binding.musicImg)
+            //binding.musicImg.setImageURI(musicService!!.imageSrc)
         }
         override fun onServiceDisconnected(name: ComponentName) {
             musicService = null
