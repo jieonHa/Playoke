@@ -118,7 +118,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="위치 정보 관련 text" />
+                android:text="노래 추천에 사용해요!" />
         </LinearLayout>
 
         <LinearLayout
@@ -144,12 +144,13 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/requset_perm_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:backgroundTint="#0802AE"
         android:text="확인"
+        android:textColor="#FFFFFF"
         android:textColorLink="#0802AE" />
 
 </LinearLayout>
