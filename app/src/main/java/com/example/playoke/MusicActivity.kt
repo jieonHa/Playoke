@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.util.Log
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playoke.databinding.ActivityMusicBinding
@@ -18,8 +19,6 @@ class MusicActivity : AppCompatActivity() {
     private var isBound = false
     private var handler: Handler? = null
     private lateinit var binding: ActivityMusicBinding
-    lateinit var musicName :String
-    lateinit var artistName:String
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -33,13 +32,15 @@ class MusicActivity : AppCompatActivity() {
             } else{
                 binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
             }
-
-            binding.musicName.setText(musicService!!.musicName)
-            binding.artistName.setText(musicService!!.artistName)
-            Glide.with(this@MusicActivity)
-                .load(musicService!!.imageSrc)
-                .into(binding.musicImg)
-            //binding.musicImg.setImageURI(musicService!!.imageSrc)
+            musicService?.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, false)
+            musicService?.player?.setOnCompletionListener {
+                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
+                    Log.d("MusicService", "Track completed. Moving to the next track.")
+                    musicService?.nextMusic(
+                        this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar
+                    )
+                }
+            }
         }
         override fun onServiceDisconnected(name: ComponentName) {
             musicService = null
@@ -61,9 +62,17 @@ class MusicActivity : AppCompatActivity() {
             val intent: Intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+        binding.skipPrevious.setOnClickListener{
+            musicService?.previousMusic(this, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar)
+            binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
+        }
         binding.addToPlaylist.setOnClickListener{
             val intent:Intent = Intent(this,AddToPlaylistActivity::class.java)
             startActivity(intent)
+        }
+        binding.skipNext.setOnClickListener{
+            musicService?.nextMusic(this, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar)
+            binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
         }
         binding.lyrics.setOnClickListener{
             val intent: Intent = Intent(this, LyricsActivity::class.java)

@@ -10,8 +10,13 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
+import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.playoke.databinding.ActivityLyricsBinding
@@ -35,6 +40,18 @@ class LyricsActivity : AppCompatActivity() {
             } else{
                 binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
             }
+            musicService?.setMediaPlayer(this@LyricsActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, false)
+            musicService?.player?.setOnCompletionListener {
+                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
+                    Log.d("MusicService", "Track completed. Moving to the next track.")
+                    musicService?.nextMusic(
+                        this@LyricsActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, binding.lyrics
+                    )
+                    //musicService?.setLyrics(this@LyricsActivity, binding.lyrics)
+                }
+            }
+                musicService?.setLyrics(this@LyricsActivity, binding.lyrics)
+
         }
         override fun onServiceDisconnected(name: ComponentName) {
             musicService = null
@@ -107,5 +124,13 @@ class LyricsActivity : AppCompatActivity() {
 
     private fun stopSeekBarUpdate() {
         handler?.removeCallbacksAndMessages(null)
+    }
+
+    fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density + 0.5f).toInt()
+    }
+
+    fun lyricsStringArray(lyrics:String):Array<String>{
+        return lyrics.split("\n").toTypedArray()
     }
 }

@@ -22,12 +22,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.playoke.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 private const val TAG_HOME = "home_fragment"
 private const val TAG_SEARCH = "search_fragment"
 private const val TAG_LIBRARY = "library_fragment"
 
 class MainActivity : AppCompatActivity() {
+    val db = Firebase.firestore
     private var musicService: MusicService? = null
     private var isBound = false
     private var handler: Handler? = null
@@ -40,18 +43,30 @@ class MainActivity : AppCompatActivity() {
             val binder = service as MusicService.LocalBinder
             musicService = binder.getService()
             isBound = true
+
             updateMusicDuration()
             startSeekBarUpdate()
+
             if (!(musicService?.isPlaying()?:false)){
                 binding.playButton.setBackgroundResource(R.drawable.ic_play_circle_outline)
             } else{
                 binding.playButton.setBackgroundResource(R.drawable.ic_pause_circle_outline)
             }
+            musicService?.player?.setOnCompletionListener(null)
+            musicService?.setMediaPlayer(this@MainActivity, binding.songTitle, binding.songArtist, binding.songImage, binding.seekBar, false)
             Log.d("Testing", "Service Started")
-            //첫번째에 안 되는 버그 있음. 다른 액티비티 갔다가 돌아와야지만 됨
-            musicService?.changeMusicName(binding.songTitle)
-            //binding.songTitle.text = musicService?.musicName ?: "Unknown Title"
-            binding.songArtist.text = musicService?.artistName ?: "Unknown Artist"
+            musicService?.player?.setOnCompletionListener {
+                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
+                    Log.d("MusicService", "Track completed. Moving to the next track.")
+                    musicService?.nextMusic(
+                        this@MainActivity,
+                        binding.songTitle,
+                        binding.songArtist,
+                        binding.songImage,
+                        binding.seekBar
+                    )
+                }
+            }
         }
         override fun onServiceDisconnected(name: ComponentName) {
             musicService = null
@@ -66,8 +81,6 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, MusicService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
-
-
 
         handler = Handler(Looper.getMainLooper())
 
@@ -94,8 +107,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.musicBottomSheetTrigger.setOnClickListener{
+        binding.musicInfoContainer.setOnClickListener{
             val intent: Intent = Intent(this, MusicActivity::class.java)
+            Log.d("testing", "working")
             startActivity(intent)
         }
         binding.plusButton.setOnClickListener{
