@@ -2,6 +2,7 @@
 <!-- 메인 화면 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,13 +19,84 @@
         app:titleTextColor="@color/blue"/>
 
     <!-- 추천 앨범/플레이리스트 섹션 수정 필요-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewPlaylists"
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
+        android:layout_height="match_parent"
         android:padding="16dp"
-        android:scrollbars="vertical" />
+        tools:context=".ui.HomeFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 빠른 추천 -->
+            <TextView
+                android:id="@+id/tvQuickRecommendation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="빠른 추천"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:paddingBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvQuickRecommendation"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:layout_marginBottom="16dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/item_home"
+                android:contentDescription="rvQuickRecommendation"/>
+
+
+            <!-- 인기 차트 -->
+            <TextView
+                android:id="@+id/tvPopularChart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인기 차트"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:paddingBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopularChart"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:layout_marginBottom="16dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/item_home"
+                android:contentDescription="rvPopularChart"/>
+
+            <!-- 상황별 추천 -->
+            <TextView
+                android:id="@+id/tvSituationRecommendation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비오는 날 / 아침 / 운동"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:paddingBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSituationRecommendation"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/item_home"
+                android:contentDescription="rvSituationRecommendation"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
 
 </LinearLayout>

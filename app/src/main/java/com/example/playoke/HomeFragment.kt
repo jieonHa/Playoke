@@ -16,8 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playoke.databinding.FragmentHomeBinding
 import com.example.playoke.databinding.FragmentLibraryBinding
+import com.example.playoke.ui.HomeAdapter
 import com.google.android.material.appbar.MaterialToolbar
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,6 +80,44 @@ class HomeFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 빠른 추천 RecyclerView 설정
+        binding.rvQuickRecommendation.apply {
+            layoutManager = GridLayoutManager(context, 3)
+            adapter = HomeAdapter(getQuickRecommendationData())
+        }
+
+        // 인기 차트 RecyclerView 설정
+        binding.rvPopularChart.apply {
+            layoutManager = GridLayoutManager(context, 3)
+            adapter = HomeAdapter(getPopularChartData())
+        }
+
+        // 상황별 추천 RecyclerView 설정
+        binding.rvSituationRecommendation.apply {
+            layoutManager = GridLayoutManager(context, 3)
+            adapter = HomeAdapter(getSituationRecommendationData())
+        }
+    }
+
+    private fun getQuickRecommendationData(): List<String> {
+        return listOf("플리 이름 1", "플리 이름 2", "플리 이름 3", "플리 이름 4", "플리 이름 5", "플리 이름 6")
+    }
+
+    private fun getPopularChartData(): List<String> {
+        return listOf("차트 1", "차트 2", "차트 3", "차트 4", "차트 5", "차트 6")
+    }
+
+    private fun getSituationRecommendationData(): List<String> {
+        return listOf("비오는 날", "아침", "운동")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     override fun onResume() {
