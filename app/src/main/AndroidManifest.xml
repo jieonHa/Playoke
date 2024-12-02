@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Playoke"
         tools:targetApi="31">
         <activity
+            android:name=".CreatePlaylistActivity"
+            android:exported="false" />
+        <activity
             android:name=".LogoActivity"
             android:exported="false" />
 
@@ -27,7 +30,6 @@
         <activity
             android:name=".SignUp"
             android:exported="true">
-
             />
         </activity>
         <activity

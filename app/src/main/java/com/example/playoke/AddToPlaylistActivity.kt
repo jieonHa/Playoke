@@ -1,5 +1,6 @@
 package com.example.playoke
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -41,5 +42,9 @@ class AddToPlaylistActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager= LinearLayoutManager(this)
         binding.recyclerView.adapter=PlaylistAdapter(data)
 
+        binding.newPlaylistBtn.setOnClickListener{
+            val intent: Intent = Intent(this, CreatePlaylistActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

@@ -27,16 +27,22 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/cancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="취소"
+            android:textColor="@color/white"
             android:backgroundTint="@color/blue"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            />
         <Button
+            android:id="@+id/confirmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="만들기"
+            android:textColor="@color/white"
             android:backgroundTint="@color/blue"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            />
     </LinearLayout>
 </LinearLayout>
