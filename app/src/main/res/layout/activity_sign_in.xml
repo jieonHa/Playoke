@@ -17,14 +17,17 @@
         android:layout_height="200dp"
         android:layout_margin="25dp"
         app:srcCompat="@drawable/playoke" />
+
     <EditText
+        android:id="@+id/email"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:hint="이메일을 입력하세요."/>
+        android:hint="이메일을 입력하세요." />
 
     <EditText
+        android:id="@+id/pw"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
