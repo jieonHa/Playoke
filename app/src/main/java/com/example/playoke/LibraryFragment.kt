@@ -79,30 +79,35 @@ class LibraryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Firestore 초기화
+        firestore = FirebaseFirestore.getInstance()
 
-        // Firestore에서 플레이리스트 데이터를 가져와 RecyclerView에 설정
-//        firestore.collection("playlists")
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                libraryplaylists.clear()
-//                for (document in documents) {
-//                    val title = document.getString("title") ?: "Unknown Title"
-//                    val numberOfSongs = document.getLong("numberOfSongs")?.toInt() ?: 0
-//                    val coverImageResId =
-//                        document.getLong("coverImageResId")?.toInt() ?: R.drawable.img_music
-//                    libraryplaylists.add(LibraryPlaylist(title, numberOfSongs, coverImageResId))
-//                }
-//            }
-
-        val libraryplaylists = listOf(
-            LibraryPlaylist("Playlist Title 1", 10, R.drawable.img_music),
-            LibraryPlaylist("Playlist Title 2", 10, R.drawable.img_music),
-            LibraryPlaylist("Playlist Title 3", 10, R.drawable.img_music)
-        )
-
+        // RecyclerView 설정
         binding.recyclerViewPlaylists.layoutManager=LinearLayoutManager(context)
-        binding.recyclerViewPlaylists.adapter=LibraryPlaylistAdapter(libraryplaylists)
         binding.recyclerViewPlaylists.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
+        // Firestore에서 데이터 가져오기
+        firestore.collection("users")
+            .document("user-1")
+            .collection("playlists")
+            .get()
+            .addOnSuccessListener { documents ->
+                val fetchedPlaylists = mutableListOf<LibraryPlaylist>()
+                for (document in documents) {
+                    val title = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
+                    val numberOfSongs = document.getString("numberOfSongs")?.toInt() ?: 0
+                    val coverImageUrl = document.getString("playlistImg") ?: ""
+
+                    // Firestore 데이터로 LibraryPlaylist 객체 생성
+                    fetchedPlaylists.add(LibraryPlaylist(title, numberOfSongs, coverImageUrl))
+                }
+
+                // Adapter 설정
+                binding.recyclerViewPlaylists.adapter = LibraryPlaylistAdapter(fetchedPlaylists)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onResume() {
@@ -133,5 +138,5 @@ class LibraryFragment : Fragment() {
     }
 }
 
-data class LibraryPlaylist(val title: String, val numberOfSongs: Int, val coverImageResId: Int)
+data class LibraryPlaylist(val title: String, val numberOfSongs: Int, val coverImageUrl: String)
 
