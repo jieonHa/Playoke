@@ -18,7 +18,7 @@
         app:title="Playoke!"
         app:titleTextColor="@color/blue"/>
 
-    <!-- 추천 앨범/플레이리스트 섹션 수정 필요-->
+    <!-- 추천 앨범/플레이리스트 섹션 -->
     <androidx.core.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,18 +35,18 @@
 
             <!-- 빠른 추천 -->
             <TextView
-                android:id="@+id/tvQuickRecommendation"
+                android:id="@+id/tvQuickRec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="빠른 추천"
+                android:text=" 빠른 추천"
                 android:textStyle="bold"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:paddingBottom="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvQuickRecommendation"
+                android:id="@+id/rvQuickRec"
                 android:layout_width="match_parent"
-                android:layout_height="125dp"
+                android:layout_height="140dp"
                 android:layout_marginBottom="16dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
@@ -59,15 +59,15 @@
                 android:id="@+id/tvPopularChart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="인기 차트"
+                android:text=" 인기 차트"
                 android:textStyle="bold"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:paddingBottom="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPopularChart"
                 android:layout_width="match_parent"
-                android:layout_height="125dp"
+                android:layout_height="140dp"
                 android:layout_marginBottom="16dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
@@ -79,15 +79,15 @@
                 android:id="@+id/tvSituationRecommendation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비오는 날 / 아침 / 운동"
+                android:text=" 맞춤 추천 플레이리스트"
                 android:textStyle="bold"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:paddingBottom="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSituationRecommendation"
+                android:id="@+id/rvSituationRec"
                 android:layout_width="match_parent"
-                android:layout_height="125dp"
+                android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
                 tools:listitem="@layout/item_home"
