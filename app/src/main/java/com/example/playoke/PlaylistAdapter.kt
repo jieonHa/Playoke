@@ -27,8 +27,8 @@ class LibraryPlaylistAdapter(private val libraryplaylists: List<LibraryPlaylist>
     }
 
     override fun onBindViewHolder(holder: LibraryPlaylistViewHolder, position: Int) {
-        holder.bind(libraryplaylists[position])  // 수정: playlists -> libraryplaylists
+        holder.bind(libraryplaylists[position])
     }
 
-    override fun getItemCount(): Int = libraryplaylists.size  // 수정: playlists -> libraryplaylists
+    override fun getItemCount(): Int = libraryplaylists.size
 }

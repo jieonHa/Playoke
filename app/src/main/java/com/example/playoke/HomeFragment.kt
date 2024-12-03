@@ -2,26 +2,18 @@ package com.example.playoke
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playoke.databinding.FragmentHomeBinding
-import com.example.playoke.databinding.FragmentLibraryBinding
-import com.example.playoke.ui.HomeAdapter
 import com.google.android.material.appbar.MaterialToolbar
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -122,7 +114,9 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity).supportActionBar?.show()
+        val activity = activity as AppCompatActivity
+        activity.supportActionBar?.show()
+        Log.d("yerim", "hometoolbar resume")
     }
 
     companion object {

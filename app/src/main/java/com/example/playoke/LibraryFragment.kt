@@ -2,6 +2,7 @@ package com.example.playoke
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,6 +24,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.playoke.placeholder.PlaceholderContent
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 /**
@@ -33,6 +35,10 @@ class LibraryFragment : Fragment() {
     private var columnCount = 1
     lateinit var binding: FragmentLibraryBinding
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var firestore: FirebaseFirestore
+
+    // Firestore에서 가져올 플레이리스트 데이터를 담을 리스트
+    private val libraryplaylists = mutableListOf<LibraryPlaylist>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,13 +75,24 @@ class LibraryFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar?.show()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        // Firestore에서 플레이리스트 데이터를 가져와 RecyclerView에 설정
+//        firestore.collection("playlists")
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                libraryplaylists.clear()
+//                for (document in documents) {
+//                    val title = document.getString("title") ?: "Unknown Title"
+//                    val numberOfSongs = document.getLong("numberOfSongs")?.toInt() ?: 0
+//                    val coverImageResId =
+//                        document.getLong("coverImageResId")?.toInt() ?: R.drawable.img_music
+//                    libraryplaylists.add(LibraryPlaylist(title, numberOfSongs, coverImageResId))
+//                }
+//            }
 
         val libraryplaylists = listOf(
             LibraryPlaylist("Playlist Title 1", 10, R.drawable.img_music),
@@ -86,6 +103,13 @@ class LibraryFragment : Fragment() {
         binding.recyclerViewPlaylists.layoutManager=LinearLayoutManager(context)
         binding.recyclerViewPlaylists.adapter=LibraryPlaylistAdapter(libraryplaylists)
         binding.recyclerViewPlaylists.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val activity = activity as AppCompatActivity
+        activity.supportActionBar?.show()
+        Log.d("yerim", "libtoolbar resume")
     }
 
     override fun onDestroyView() {

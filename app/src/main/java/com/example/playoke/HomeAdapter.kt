@@ -1,10 +1,9 @@
-package com.example.playoke.ui
+package com.example.playoke
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.playoke.R
 import com.example.playoke.databinding.ItemHomeBinding
 
 class HomeAdapter(private val items: List<String>) :
