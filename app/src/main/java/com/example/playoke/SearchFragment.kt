@@ -1,6 +1,7 @@
 package com.example.playoke
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,9 +29,10 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        // 툴바 숨기기
-        val activity = activity as AppCompatActivity
-        activity.supportActionBar?.hide()
+//        // 툴바 숨기기
+//        val activity = activity as AppCompatActivity
+//        activity.supportActionBar?.hide()
+//        Log.d("yerim", "toolbar hide")
     }
 
     companion object {
