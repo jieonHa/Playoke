@@ -17,9 +17,8 @@ import com.example.playoke.databinding.ActivityAccessPermissionBinding
 class AccessPermission : AppCompatActivity() {
     private val requiredPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.BLUETOOTH,
-        Manifest.permission.RECORD_AUDIO,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    //    Manifest.permission.BLUETOOTH,
+        Manifest.permission.RECORD_AUDIO
     )
     private val permissionRequestCode = 200
 
@@ -27,7 +26,7 @@ class AccessPermission : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_access_permission) // 레이아웃 설정
 
-        val binding = ActivityAccessPermissionBinding.inflate(layoutInflater)
+    //    val binding = ActivityAccessPermissionBinding.inflate(layoutInflater)
 
         val requestButton: Button = findViewById(R.id.requset_perm_btn)
     //    val statusText: TextView = findViewById(R.id.tv_permission_status)
