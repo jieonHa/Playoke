@@ -17,31 +17,20 @@
         android:layout_height="200dp"
         android:layout_margin="25dp"
         app:srcCompat="@drawable/playoke" />
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:hint="이메일을 입력하세요."/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="비밀번호를 입력하세요"
+        android:inputType="textPassword" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:hint="아이디를 입력하세요."
-            android:text="" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:hint="비밀번호를 입력하세요"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/sign_in_btn"
@@ -64,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:clickable="true"
-            android:text="아이디/비밀번호 찾기" />
+            android:text="비밀번호 찾기" />
 
         <TextView
             android:id="@+id/to_sign_up"
