@@ -2,31 +2,37 @@ package com.example.playoke
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.playoke.databinding.ItemHomeBinding
+import android.view.View
 
-class HomeAdapter(private val items: List<String>) :
-    RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter(private val playlists: List<HomePlaylist>) :
+    RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    inner class HomeViewHolder(private val binding: ItemHomeBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(imageUrl: String) {
-            Glide.with(binding.root.context)
-                .load(imageUrl)
-                .into(binding.ivItemcover)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_home, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val binding =
-            ItemHomeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeViewHolder(binding)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val playlist = playlists[position]
+        holder.titleTextView.text = playlist.title
+
+        // Glide를 사용해 URL 이미지 로드
+        Glide.with(holder.itemView.context)
+            .load(playlist.coverImageUrl) // Firestore에서 가져온 URL
+            .placeholder(R.drawable.img_music) // 로딩 중 기본 이미지
+            .error(R.drawable.img_error) // 에러 발생 시 기본 이미지
+            .into(holder.coverImageView)
     }
 
-    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        holder.bind(items[position])
-    }
+    override fun getItemCount(): Int = playlists.size
 
-    override fun getItemCount(): Int = items.size
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val titleTextView: TextView = view.findViewById(R.id.tvPlaylistName)
+        val coverImageView: ImageView = view.findViewById(R.id.ivItemcover)
+    }
 }

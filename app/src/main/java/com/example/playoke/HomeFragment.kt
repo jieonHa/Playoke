@@ -10,11 +10,17 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playoke.databinding.FragmentHomeBinding
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.FirebaseApp
+
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -30,6 +36,7 @@ class HomeFragment : Fragment() {
     private var param2: String? = null
     lateinit var binding: FragmentHomeBinding
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,23 +84,65 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 빠른 추천 RecyclerView 설정
-        binding.rvQuickRecommendation.apply {
-            layoutManager = GridLayoutManager(context, 3)
-            adapter = HomeAdapter(getQuickRecommendationData())
-        }
+        // Firestore 초기화
+        firestore = FirebaseFirestore.getInstance()
 
-        // 인기 차트 RecyclerView 설정
-        binding.rvPopularChart.apply {
-            layoutManager = GridLayoutManager(context, 3)
-            adapter = HomeAdapter(getPopularChartData())
-        }
+        binding.rvQuickRec.layoutManager = GridLayoutManager(context, 3)
+        binding.rvQuickRec.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
+        // Firestore에서 데이터 가져오기
+        firestore.collection("users")
+            .document("user-1")
+            .collection("playlists")
+            .get()
+            .addOnSuccessListener { documents ->
+                val fetchedPlaylists = mutableListOf<HomePlaylist>()
+                for (document in documents) {
+                    val title = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
+                    val coverImageUrl = document.getString("playlistImg") ?: ""
+
+                    // Firestore 데이터로 HomePlaylist 객체 생성
+                    fetchedPlaylists.add(HomePlaylist(title, coverImageUrl))
+                    Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
+                }
+
+                // Adapter 설정
+                binding.rvQuickRec.adapter = HomeAdapter(fetchedPlaylists)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        binding.rvPopularChart.layoutManager = GridLayoutManager(context, 3)
+        binding.rvPopularChart.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         // 상황별 추천 RecyclerView 설정
-        binding.rvSituationRecommendation.apply {
-            layoutManager = GridLayoutManager(context, 3)
-            adapter = HomeAdapter(getSituationRecommendationData())
-        }
+        binding.rvSituationRec.layoutManager = GridLayoutManager(context, 3)
+        binding.rvSituationRec.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
+        // Firestore에서 데이터 가져오기
+        firestore.collection("main")
+            .document("SituationRec")
+            .collection("palylists")
+            .get()
+            .addOnSuccessListener { documents ->
+                val fetchedPlaylists = mutableListOf<HomePlaylist>()
+                for (document in documents) {
+                    val title = document.getString("title") ?: ""
+                    val coverImageUrl = document.getString("playlistImg") ?: ""
+
+                    // Firestore 데이터로 HomePlaylist 객체 생성
+                    fetchedPlaylists.add(HomePlaylist(title, coverImageUrl))
+                    Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
+                }
+
+                // Adapter 설정
+                binding.rvPopularChart.adapter = HomeAdapter(fetchedPlaylists)
+                binding.rvSituationRec.adapter = HomeAdapter(fetchedPlaylists)
+
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun getQuickRecommendationData(): List<String> {
@@ -142,3 +191,5 @@ class HomeFragment : Fragment() {
         inflater.inflate(R.menu.menu_main, menu)
     }
 }
+
+data class HomePlaylist(val title: String, val coverImageUrl: String)
