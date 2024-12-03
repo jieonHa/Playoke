@@ -2,9 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".idFinding">
+    android:layout_height="match_parent">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,60 +12,51 @@
         android:layout_margin="20dp"
         android:gravity="center"
         android:orientation="vertical">
-
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:text="비밀번호 찾기"
+            android:textColor="#0802AE"
+            android:textSize="34sp"
+            android:textStyle="bold"></TextView>
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_margin="15dp"
+            android:background="?android:attr/listDivider"
+            android:backgroundTint="#A70802AE" />
+
+        <EditText
+            android:id="@+id/email_for_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:height="50dp"
-            android:text="비밀번호 찾기-탭으로 구현" />
+            android:layout_margin="20dp"
+            android:hint="이메일을 입력해주세요."/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:helperText="이름을 입력해주세요.">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/usr_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="이름" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:helperText="이메일을 입력해주세요.">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/usr_mail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="e-mail" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:helperText="아이디를 입력해주세요.">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/usr_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="ID" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/sends_mail_button"
+            android:id="@+id/finds_pw_btn"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="30dp"
+            android:layout_margin="20dp"
             android:backgroundTint="#0802AE"
-            android:text="임시 비밀번호 전송" />
+            android:text="비밀번호 찾기" />
+
+        <Button
+            android:id="@+id/back_to_sign_in"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#0802AE"
+            android:text="돌아가기" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/pw_found"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="해당 이메일로 임시 비밀번호를 전송하였습니다."
