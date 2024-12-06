@@ -37,7 +37,6 @@
             android:hint="이메일을 입력해주세요."/>
 
 
-
         <Button
             android:id="@+id/finds_pw_btn"
             android:layout_width="250dp"
@@ -45,7 +44,7 @@
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:backgroundTint="#0802AE"
-            android:text="비밀번호 찾기" />
+            android:text="임시 비밀번호 전송" />
 
         <Button
             android:id="@+id/back_to_sign_in"
