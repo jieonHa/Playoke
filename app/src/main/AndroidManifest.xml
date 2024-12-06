@@ -41,7 +41,7 @@
         <activity
             android:name=".SignUp"
             android:exported="true"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".SignIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,10 +50,12 @@
         </activity>
         <activity
             android:name=".SignIn"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".pwFinding"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".SignIn"/>
         <activity
             android:name=".AccessPermission"
             android:exported="false" />
