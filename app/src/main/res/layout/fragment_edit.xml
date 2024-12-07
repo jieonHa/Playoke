@@ -12,7 +12,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/toolbarImageButton"
+            android:id="@+id/btnBack"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"

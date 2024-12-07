@@ -49,8 +49,10 @@ class PlaylistFragment : Fragment() {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
 
         // 전달받은 playlistId 받기
-        playlistId = requireArguments().getString("plalistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
+        // playlistId = requireArguments().getString("plalistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
+        playlistId = arguments?.getString("playlistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
         Log.d("getPlaylistId", playlistId)
+
         return binding.root
     }
 
@@ -89,12 +91,17 @@ class PlaylistFragment : Fragment() {
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
 
-
-
-        // btnBack 버튼 클릭 이벤트 처리 (이전 프래그먼트로 돌아가게 수정 필요!)
+        // btnBack 버튼 클릭 이벤트 처리
         binding.btnBack.setOnClickListener {
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainer, LibraryFragment()) // HomeFragment로 교체
+            fragmentTransaction.replace(R.id.fragmentContainer, LibraryFragment()) // HomeFragment도 추가 필요
+            fragmentTransaction.addToBackStack(null) // 백 스택에 추가
+            fragmentTransaction.commit()
+        }
+        // btnEdit 버튼 클릭 이벤트 처리
+        binding.btnEdit.setOnClickListener {
+            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainer, EditFragment()) // EditFragment로 교체
             fragmentTransaction.addToBackStack(null) // 백 스택에 추가
             fragmentTransaction.commit()
         }
