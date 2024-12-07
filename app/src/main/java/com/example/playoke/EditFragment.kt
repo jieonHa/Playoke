@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playoke.databinding.FragmentEditBinding
+import com.example.playoke.databinding.FragmentPlaylistBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +25,8 @@ class EditFragment : Fragment() {
 
     private var columnCount = 1
     lateinit var binding: FragmentEditBinding
+    private lateinit var firestore: FirebaseFirestore
+
 
     var ARG_PARAM1 = "param1"
     var ARG_PARAM2 = "param2"
@@ -42,20 +46,18 @@ class EditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit, container, false)
+        binding = FragmentEditBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val edits = listOf(
-            Edit("Song Title 1", "Artist1", R.drawable.img_music),
-            Edit("Song Title 2", "Artist2", R.drawable.img_music),
-            Edit("Song Title 3", "Artist3", R.drawable.img_music)
-        )
+        // Firestore 초기화
+        firestore = FirebaseFirestore.getInstance()
 
-        binding.recyclerViewEdit.layoutManager= LinearLayoutManager(context)
-        binding.recyclerViewEdit.adapter=EditAdapter(edits)
+        // RecyclerView 설정
+        binding.recyclerViewEdit.layoutManager=LinearLayoutManager(context)
         binding.recyclerViewEdit.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
     }
 

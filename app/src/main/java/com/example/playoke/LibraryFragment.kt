@@ -13,14 +13,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.playoke.databinding.FragmentLibraryBinding
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.playoke.placeholder.PlaceholderContent
 import com.google.android.material.appbar.MaterialToolbar
@@ -94,20 +90,34 @@ class LibraryFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 val fetchedPlaylists = mutableListOf<LibraryPlaylist>()
                 for (document in documents) {
-                    val title = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
+                    val playlistId = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
                     val numberOfSongs = document.getString("numberOfSongs")?.toInt() ?: 0
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 LibraryPlaylist 객체 생성
-                    fetchedPlaylists.add(LibraryPlaylist(title, numberOfSongs, coverImageUrl))
+                    fetchedPlaylists.add(LibraryPlaylist(playlistId, numberOfSongs, coverImageUrl))
                 }
 
                 // Adapter 설정
-                binding.recyclerViewPlaylists.adapter = LibraryPlaylistAdapter(fetchedPlaylists)
+                binding.recyclerViewPlaylists.adapter = LibraryPlaylistAdapter(fetchedPlaylists) { playlistId ->
+                    val playlistFragment = PlaylistFragment().apply {
+                        arguments = Bundle().apply {
+                            putString("playlistId", playlistId)  // playlistId 전달
+                            Log.d("playlistId", playlistId)
+                        }
+                    }
+
+                    // 프래그먼트 트랜잭션
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, playlistFragment)
+                        .addToBackStack(null)  // 백 스택에 추가
+                        .commit()
+                }
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
+
     }
 
     override fun onResume() {
