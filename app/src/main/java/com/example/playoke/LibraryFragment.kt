@@ -103,7 +103,8 @@ class LibraryFragment : Fragment() {
                     val playlistFragment = PlaylistFragment().apply {
                         arguments = Bundle().apply {
                             putString("playlistId", playlistId)  // playlistId 전달
-                            Log.d("playlistId", playlistId)
+                            Log.d("LibraryFragment", "Sending Playlist ID: $playlistId")
+
                         }
                     }
 

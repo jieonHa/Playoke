@@ -13,13 +13,6 @@ import com.bumptech.glide.Glide
 import com.example.playoke.databinding.FragmentPlaylistBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PlaylistFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-
 class PlaylistFragment : Fragment() {
 
     private var columnCount = 1
@@ -27,18 +20,8 @@ class PlaylistFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private var playlistId: String = ""
 
-
-    var ARG_PARAM1 = "param1"
-    var ARG_PARAM2 = "param2"
-    private var param1: String? = null
-    private var param2: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -49,9 +32,8 @@ class PlaylistFragment : Fragment() {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
 
         // 전달받은 playlistId 받기
-        // playlistId = requireArguments().getString("plalistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
         playlistId = arguments?.getString("playlistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
-        Log.d("getPlaylistId", playlistId)
+        Log.d("PlaylistFragment", "Arguments: $arguments")
 
         return binding.root
     }
@@ -98,6 +80,7 @@ class PlaylistFragment : Fragment() {
 
                 // Adapter 설정
                 binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs)
+
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
@@ -134,15 +117,21 @@ class PlaylistFragment : Fragment() {
 
         // btnBack 버튼 클릭 이벤트 처리
         binding.btnBack.setOnClickListener {
-            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainer, LibraryFragment()) // HomeFragment도 추가 필요
-            fragmentTransaction.addToBackStack(null) // 백 스택에 추가
-            fragmentTransaction.commit()
+            requireActivity().supportFragmentManager.popBackStack()
         }
         // btnEdit 버튼 클릭 이벤트 처리
         binding.btnEdit.setOnClickListener {
+            // EditFragment에 전달할 arguments 생성
+            val editFragment = EditFragment().apply {
+                arguments = Bundle().apply {
+                    putString("playlistId", playlistId) // playlistId 전달
+                    Log.d("PlaylistFragment", "Sending Playlist ID: $playlistId")
+                }
+            }
+
+            // Fragment 교체 작업
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainer, EditFragment()) // EditFragment로 교체
+            fragmentTransaction.replace(R.id.fragmentContainer, editFragment) // EditFragment로 교체
             fragmentTransaction.addToBackStack(null) // 백 스택에 추가
             fragmentTransaction.commit()
         }
@@ -152,25 +141,6 @@ class PlaylistFragment : Fragment() {
         super.onDestroyView()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PlaylistFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PlaylistFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
 
 data class Song(val name: String, val artist: String, val coverImageUrl: String)
