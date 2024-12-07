@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playoke.databinding.FragmentLibraryBinding
+import com.bumptech.glide.Glide
 import com.example.playoke.databinding.FragmentPlaylistBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -66,7 +66,7 @@ class PlaylistFragment : Fragment() {
         binding.recyclerViewSongs.layoutManager=LinearLayoutManager(context)
         binding.recyclerViewSongs.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
-        // Firestore에서 데이터 가져오기
+        // Firestore에서 song 데이터 가져오기
         firestore.collection("users")
             .document("user-1")
             .collection("playlists")
@@ -80,8 +80,20 @@ class PlaylistFragment : Fragment() {
                     val artist = document.getString("artist") ?: ""
                     val coverImageUrl = document.getString("img") ?: ""
 
-                    // Firestore 데이터로 LibraryPlaylist 객체 생성
+                    // Firestore 데이터로 Song 객체 생성
                     fetchedSongs.add(Song(name, artist, coverImageUrl))
+
+                    // 이름 설정
+                    binding.tvPlaylistName.text = name
+
+                    // 이미지 설정
+                    if (coverImageUrl.isNotEmpty()) {
+                        Glide.with(this)
+                            .load(coverImageUrl)
+                            .into(binding.ivPlaylistCover)
+                    } else {
+                        binding.ivPlaylistCover.setImageResource(R.drawable.img_error)
+                    }
                 }
 
                 // Adapter 설정
@@ -90,13 +102,39 @@ class PlaylistFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
+        // Firestore에서 playlist 데이터 가져오기
+        firestore.collection("users")
+            .document("user-1")
+            .collection("playlists")
+            .document(playlistId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val playlistId = playlistId
+                    val coverImageUrl = document.getString("playlistImg") ?: ""
+
+                    // 이름 설정
+                    binding.tvPlaylistName.text = playlistId
+
+                    // 이미지 설정
+                    if (coverImageUrl.isNotEmpty()) {
+                        Glide.with(this)
+                            .load(coverImageUrl)
+                            .into(binding.ivPlaylistCover)
+                    } else {
+                        binding.ivPlaylistCover.setImageResource(R.drawable.img_error)
+                    }
+                } else {
+                    Toast.makeText(context, "Playlist does not exist.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
 
         // btnBack 버튼 클릭 이벤트 처리
         binding.btnBack.setOnClickListener {
-            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainer, LibraryFragment()) // HomeFragment도 추가 필요
-            fragmentTransaction.addToBackStack(null) // 백 스택에 추가
-            fragmentTransaction.commit()
+            requireActivity().supportFragmentManager.popBackStack()
         }
         // btnEdit 버튼 클릭 이벤트 처리
         binding.btnEdit.setOnClickListener {

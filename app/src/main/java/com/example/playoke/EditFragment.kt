@@ -26,6 +26,7 @@ class EditFragment : Fragment() {
     private var columnCount = 1
     lateinit var binding: FragmentEditBinding
     private lateinit var firestore: FirebaseFirestore
+    private var playlistId: String = ""
 
 
     var ARG_PARAM1 = "param1"
@@ -62,10 +63,7 @@ class EditFragment : Fragment() {
 
         // btnBack 버튼 클릭 이벤트 처리
         binding.btnBack.setOnClickListener {
-            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainer, LibraryFragment()) // HomeFragment도 추가 필요
-            fragmentTransaction.addToBackStack(null) // 백 스택에 추가
-            fragmentTransaction.commit()
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
