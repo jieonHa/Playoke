@@ -87,6 +87,7 @@ class HomeFragment : Fragment() {
         // Firestore 초기화
         firestore = FirebaseFirestore.getInstance()
 
+        // 빠른 추천 RecyclerView 설정
         binding.rvQuickRec.layoutManager = GridLayoutManager(context, 3)
         binding.rvQuickRec.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
@@ -113,16 +114,14 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
 
+        // 인기차트 RecyclerView 설정
         binding.rvPopularChart.layoutManager = GridLayoutManager(context, 3)
         binding.rvPopularChart.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        // 상황별 추천 RecyclerView 설정
-        binding.rvSituationRec.layoutManager = GridLayoutManager(context, 3)
-        binding.rvSituationRec.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         // Firestore에서 데이터 가져오기
         firestore.collection("main")
-            .document("SituationRec")
-            .collection("palylists")
+            .document("PopularChart")
+            .collection("playlists")
             .get()
             .addOnSuccessListener { documents ->
                 val fetchedPlaylists = mutableListOf<HomePlaylist>()
@@ -137,24 +136,39 @@ class HomeFragment : Fragment() {
 
                 // Adapter 설정
                 binding.rvPopularChart.adapter = HomeAdapter(fetchedPlaylists)
+
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        // 상황별 추천 RecyclerView 설정
+        binding.rvSituationRec.layoutManager = GridLayoutManager(context, 3)
+        binding.rvSituationRec.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
+        // Firestore에서 데이터 가져오기
+        firestore.collection("main")
+            .document("SituationRec")
+            .collection("playlists")
+            .get()
+            .addOnSuccessListener { documents ->
+                val fetchedPlaylists = mutableListOf<HomePlaylist>()
+                for (document in documents) {
+                    val title = document.getString("title") ?: ""
+                    val coverImageUrl = document.getString("playlistImg") ?: ""
+
+                    // Firestore 데이터로 HomePlaylist 객체 생성
+                    fetchedPlaylists.add(HomePlaylist(title, coverImageUrl))
+                    Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
+                }
+
+                // Adapter 설정
                 binding.rvSituationRec.adapter = HomeAdapter(fetchedPlaylists)
 
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
-    }
-
-    private fun getQuickRecommendationData(): List<String> {
-        return listOf("플리 이름 1", "플리 이름 2", "플리 이름 3", "플리 이름 4", "플리 이름 5", "플리 이름 6")
-    }
-
-    private fun getPopularChartData(): List<String> {
-        return listOf("차트 1", "차트 2", "차트 3", "차트 4", "차트 5", "차트 6")
-    }
-
-    private fun getSituationRecommendationData(): List<String> {
-        return listOf("비오는 날", "아침", "운동")
     }
 
     override fun onDestroyView() {

@@ -26,6 +26,7 @@ class EditFragment : Fragment() {
     private var columnCount = 1
     lateinit var binding: FragmentEditBinding
     private lateinit var firestore: FirebaseFirestore
+    private var playlistId: String = ""
 
 
     var ARG_PARAM1 = "param1"
