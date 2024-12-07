@@ -134,10 +134,7 @@ class PlaylistFragment : Fragment() {
 
         // btnBack 버튼 클릭 이벤트 처리
         binding.btnBack.setOnClickListener {
-            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainer, LibraryFragment()) // HomeFragment도 추가 필요
-            fragmentTransaction.addToBackStack(null) // 백 스택에 추가
-            fragmentTransaction.commit()
+            requireActivity().supportFragmentManager.popBackStack()
         }
         // btnEdit 버튼 클릭 이벤트 처리
         binding.btnEdit.setOnClickListener {
