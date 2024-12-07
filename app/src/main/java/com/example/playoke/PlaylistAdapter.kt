@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import android.view.View
 
-class LibraryPlaylistAdapter(private val playlists: List<LibraryPlaylist>) :
+class LibraryPlaylistAdapter(
+    private val playlists: List<LibraryPlaylist>,
+    private val onItemClick: (String) -> Unit // 클릭 이벤트 콜백
+) :
     RecyclerView.Adapter<LibraryPlaylistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,6 +31,11 @@ class LibraryPlaylistAdapter(private val playlists: List<LibraryPlaylist>) :
             .placeholder(R.drawable.img_music) // 로딩 중 기본 이미지
             .error(R.drawable.img_error) // 에러 발생 시 기본 이미지
             .into(holder.coverImageView)
+
+        // 아이템 클릭 이벤트
+        holder.itemView.setOnClickListener {
+            onItemClick(playlist.title) // 클릭 시 플레이리스트 ID 전달
+        }
     }
 
     override fun getItemCount(): Int = playlists.size

@@ -1,13 +1,17 @@
 package com.example.playoke
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playoke.databinding.FragmentLibraryBinding
 import com.example.playoke.databinding.FragmentPlaylistBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 /**
@@ -20,6 +24,9 @@ class PlaylistFragment : Fragment() {
 
     private var columnCount = 1
     lateinit var binding: FragmentPlaylistBinding
+    private lateinit var firestore: FirebaseFirestore
+    private var playlistId: String = ""
+
 
     var ARG_PARAM1 = "param1"
     var ARG_PARAM2 = "param2"
@@ -39,21 +46,65 @@ class PlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_playlist, container, false)
+        binding = FragmentPlaylistBinding.inflate(inflater, container, false)
+
+        // 전달받은 playlistId 받기
+        // playlistId = requireArguments().getString("plalistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
+        playlistId = arguments?.getString("playlistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
+        Log.d("getPlaylistId", playlistId)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val songs = listOf(
-            Song("Song Title 1", "Artist1", R.drawable.img_music),
-            Song("Song Title 2", "Artist2", R.drawable.img_music),
-            Song("Song Title 3", "Artist3", R.drawable.img_music)
-        )
+        // Firestore 초기화
+        firestore = FirebaseFirestore.getInstance()
 
-        binding.recyclerViewSongs.layoutManager= LinearLayoutManager(context)
-        binding.recyclerViewSongs.adapter=SongAdapter(songs)
+        // RecyclerView 설정
+        binding.recyclerViewSongs.layoutManager=LinearLayoutManager(context)
         binding.recyclerViewSongs.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
+        // Firestore에서 데이터 가져오기
+        firestore.collection("users")
+            .document("user-1")
+            .collection("playlists")
+            .document(playlistId)
+            .collection("songs")
+            .get()
+            .addOnSuccessListener { documents ->
+                val fetchedSongs = mutableListOf<Song>()
+                for (document in documents) {
+                    val name = document.getString("name") ?: ""
+                    val artist = document.getString("artist") ?: ""
+                    val coverImageUrl = document.getString("img") ?: ""
+
+                    // Firestore 데이터로 LibraryPlaylist 객체 생성
+                    fetchedSongs.add(Song(name, artist, coverImageUrl))
+                }
+
+                // Adapter 설정
+                binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        // btnBack 버튼 클릭 이벤트 처리
+        binding.btnBack.setOnClickListener {
+            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainer, LibraryFragment()) // HomeFragment도 추가 필요
+            fragmentTransaction.addToBackStack(null) // 백 스택에 추가
+            fragmentTransaction.commit()
+        }
+        // btnEdit 버튼 클릭 이벤트 처리
+        binding.btnEdit.setOnClickListener {
+            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragmentContainer, EditFragment()) // EditFragment로 교체
+            fragmentTransaction.addToBackStack(null) // 백 스택에 추가
+            fragmentTransaction.commit()
+        }
     }
 
     override fun onDestroyView() {
@@ -81,4 +132,4 @@ class PlaylistFragment : Fragment() {
     }
 }
 
-data class Song(val title: String, val artist: String, val coverImageResId: Int)
+data class Song(val name: String, val artist: String, val coverImageUrl: String)
