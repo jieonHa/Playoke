@@ -21,29 +21,15 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.FirebaseApp
 
-
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+
     lateinit var binding: FragmentHomeBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -99,16 +85,32 @@ class HomeFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 val fetchedPlaylists = mutableListOf<HomePlaylist>()
                 for (document in documents) {
-                    val title = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
+                    val playlistId = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(title, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistId, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
                 // Adapter 설정
-                binding.rvQuickRec.adapter = HomeAdapter(fetchedPlaylists)
+                binding.rvQuickRec.adapter = HomeAdapter(fetchedPlaylists) { playlistId ->
+                    val playlistFragment = PlaylistFragment().apply {
+                        arguments = Bundle().apply {
+                            putString("collectionPath", "users")
+                            putString("documentPath", "user-1")
+                            putString("playlistId", playlistId)  // playlistId 전달
+                            Log.d("HomeFragment", "Sending Playlist ID: $playlistId")
+
+                        }
+                    }
+
+                    // 프래그먼트 트랜잭션
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, playlistFragment)
+                        .addToBackStack(null)  // 백 스택에 추가
+                        .commit()
+                }
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
@@ -126,16 +128,31 @@ class HomeFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 val fetchedPlaylists = mutableListOf<HomePlaylist>()
                 for (document in documents) {
-                    val title = document.getString("title") ?: ""
+                    val playlistId = document.id
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(title, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistId, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
                 // Adapter 설정
-                binding.rvPopularChart.adapter = HomeAdapter(fetchedPlaylists)
+                binding.rvPopularChart.adapter = HomeAdapter(fetchedPlaylists) { playlistId ->
+                    val playlistFragment = PlaylistFragment().apply {
+                        arguments = Bundle().apply {
+                            putString("collectionPath", "main")
+                            putString("documentPath", "PopularChart")
+                            putString("playlistId", playlistId)  // playlistId 전달
+                            Log.d("HomeFragment", "Sending Playlist ID: $playlistId")
+                        }
+                    }
+
+                    // 프래그먼트 트랜잭션
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, playlistFragment)
+                        .addToBackStack(null)  // 백 스택에 추가
+                        .commit()
+                }
 
             }
             .addOnFailureListener { exception ->
@@ -154,16 +171,32 @@ class HomeFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 val fetchedPlaylists = mutableListOf<HomePlaylist>()
                 for (document in documents) {
-                    val title = document.getString("title") ?: ""
+                    val playlistId = document.id
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(title, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistId, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
                 // Adapter 설정
-                binding.rvSituationRec.adapter = HomeAdapter(fetchedPlaylists)
+                binding.rvSituationRec.adapter = HomeAdapter(fetchedPlaylists) { playlistId ->
+                    val playlistFragment = PlaylistFragment().apply {
+                        arguments = Bundle().apply {
+                            putString("collectionPath", "main")
+                            putString("documentPath", "SituationRec")
+                            putString("playlistId", playlistId)  // playlistId 전달
+                            Log.d("HomeFragment", "Sending Playlist ID: $playlistId")
+
+                        }
+                    }
+
+                    // 프래그먼트 트랜잭션
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, playlistFragment)
+                        .addToBackStack(null)  // 백 스택에 추가
+                        .commit()
+                }
 
             }
             .addOnFailureListener { exception ->
@@ -179,27 +212,9 @@ class HomeFragment : Fragment() {
         super.onResume()
         val activity = activity as AppCompatActivity
         activity.supportActionBar?.show()
-        Log.d("yerim", "hometoolbar resume")
+        Log.d("HomeFragment", "hometoolbar resume")
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_main, menu)

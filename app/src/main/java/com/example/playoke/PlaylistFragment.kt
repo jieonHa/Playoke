@@ -18,6 +18,8 @@ class PlaylistFragment : Fragment() {
     private var columnCount = 1
     lateinit var binding: FragmentPlaylistBinding
     private lateinit var firestore: FirebaseFirestore
+    private var collectionPath: String = ""
+    private var documentPath: String = ""
     private var playlistId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +34,10 @@ class PlaylistFragment : Fragment() {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
 
         // 전달받은 playlistId 받기
+        collectionPath = arguments?.getString("collectionPath") ?: throw IllegalArgumentException("collectionPath is missing!")
+        Log.d("PlaylistFragment", "Arguments: $arguments")
+        documentPath = arguments?.getString("documentPath") ?: throw IllegalArgumentException("documentPath is missing!")
+        Log.d("PlaylistFragment", "Arguments: $arguments")
         playlistId = arguments?.getString("playlistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
         Log.d("PlaylistFragment", "Arguments: $arguments")
 
@@ -49,8 +55,8 @@ class PlaylistFragment : Fragment() {
         binding.recyclerViewSongs.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         // Firestore에서 song 데이터 가져오기
-        firestore.collection("users")
-            .document("user-1")
+        firestore.collection(collectionPath)
+            .document(documentPath)
             .collection("playlists")
             .document(playlistId)
             .collection("songs")
@@ -86,8 +92,8 @@ class PlaylistFragment : Fragment() {
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
         // Firestore에서 playlist 데이터 가져오기
-        firestore.collection("users")
-            .document("user-1")
+        firestore.collection(collectionPath)
+            .document(documentPath)
             .collection("playlists")
             .document(playlistId)
             .get()
