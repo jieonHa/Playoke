@@ -19,6 +19,8 @@ class EditFragment : Fragment() {
     private var columnCount = 1
     lateinit var binding: FragmentEditBinding
     private lateinit var firestore: FirebaseFirestore
+    private var collectionPath: String = ""
+    private var documentPath: String = ""
     private var playlistId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,10 @@ class EditFragment : Fragment() {
         binding = FragmentEditBinding.inflate(inflater, container, false)
 
         // 전달받은 playlistId 받기
+        collectionPath = arguments?.getString("collectionPath") ?: throw IllegalArgumentException("collectionPath is missing!")
+        Log.d("EditFragment", "Arguments: $arguments")
+        documentPath = arguments?.getString("documentPath") ?: throw IllegalArgumentException("documentPath is missing!")
+        Log.d("EditFragment", "Arguments: $arguments")
         playlistId = arguments?.getString("playlistId") ?: throw IllegalArgumentException("Playlist ID is missing!")
         Log.d("EditFragment", "Arguments: $arguments")
 
@@ -50,8 +56,8 @@ class EditFragment : Fragment() {
         binding.recyclerViewEdit.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         // Firestore에서 song 데이터 가져오기
-        firestore.collection("users")
-            .document("user-1")
+        firestore.collection(collectionPath)
+            .document(documentPath)
             .collection("playlists")
             .document(playlistId)
             .collection("songs")
@@ -66,17 +72,6 @@ class EditFragment : Fragment() {
                     // Firestore 데이터로 Song 객체 생성
                     fetchedEdit.add(Edit(name, artist, coverImageUrl))
 
-//                    // 이름 설정
-//                    binding.tvPlaylistName.text = name
-
-                    // 이미지 설정
-                    if (coverImageUrl.isNotEmpty()) {
-                        Glide.with(this)
-                            .load(coverImageUrl)
-                            .into(binding.ivPlaylistCover)
-                    } else {
-                        binding.ivPlaylistCover.setImageResource(R.drawable.img_error)
-                    }
                 }
 
                 // Adapter 설정
@@ -87,8 +82,8 @@ class EditFragment : Fragment() {
             }
 
         // Firestore에서 playlist 데이터 가져오기
-        firestore.collection("users")
-            .document("user-1")
+        firestore.collection(collectionPath)
+            .document(documentPath)
             .collection("playlists")
             .document(playlistId)
             .get()
@@ -101,9 +96,9 @@ class EditFragment : Fragment() {
                     if (coverImageUrl.isNotEmpty()) {
                         Glide.with(this)
                             .load(coverImageUrl)
-                            .into(binding.ivPlaylistCover)
+                            .into(binding.ivEditCover)
                     } else {
-                        binding.ivPlaylistCover.setImageResource(R.drawable.img_error)
+                        binding.ivEditCover.setImageResource(R.drawable.img_error)
                     }
                 } else {
                     Toast.makeText(context, "Playlist does not exist.", Toast.LENGTH_SHORT).show()

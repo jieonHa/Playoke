@@ -70,18 +70,6 @@ class PlaylistFragment : Fragment() {
 
                     // Firestore 데이터로 Song 객체 생성
                     fetchedSongs.add(Song(name, artist, coverImageUrl))
-
-                    // 이름 설정
-                    binding.tvPlaylistName.text = name
-
-                    // 이미지 설정
-                    if (coverImageUrl.isNotEmpty()) {
-                        Glide.with(this)
-                            .load(coverImageUrl)
-                            .into(binding.ivPlaylistCover)
-                    } else {
-                        binding.ivPlaylistCover.setImageResource(R.drawable.img_error)
-                    }
                 }
 
                 // Adapter 설정
@@ -130,6 +118,8 @@ class PlaylistFragment : Fragment() {
             // EditFragment에 전달할 arguments 생성
             val editFragment = EditFragment().apply {
                 arguments = Bundle().apply {
+                    putString("collectionPath", collectionPath)
+                    putString("documentPath", documentPath)
                     putString("playlistId", playlistId) // playlistId 전달
                     Log.d("PlaylistFragment", "Sending Playlist ID: $playlistId")
                 }
