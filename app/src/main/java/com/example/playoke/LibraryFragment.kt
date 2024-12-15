@@ -102,8 +102,11 @@ class LibraryFragment : Fragment() {
                 binding.recyclerViewPlaylists.adapter = LibraryPlaylistAdapter(fetchedPlaylists) { playlistId ->
                     val playlistFragment = PlaylistFragment().apply {
                         arguments = Bundle().apply {
+                            putString("collectionPath", "users")
+                            putString("documentPath", "user-1")
                             putString("playlistId", playlistId)  // playlistId 전달
-                            Log.d("playlistId", playlistId)
+                            Log.d("LibraryFragment", "Sending Playlist ID: $playlistId")
+
                         }
                     }
 
