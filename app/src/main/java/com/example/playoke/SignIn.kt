@@ -24,7 +24,7 @@ class SignIn : AppCompatActivity() {
         }
 
         binding.toIdPwFinding.setOnClickListener{ // 비밀번호 찾기로 이동
-            val intent: Intent = Intent(this, pwFinding::class.java)
+            val intent: Intent = Intent(this, pwReset::class.java)
             startActivity(intent)
         }
 
