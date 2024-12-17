@@ -22,17 +22,35 @@ class CreatePlaylistActivity : AppCompatActivity() {
         }
         binding.confirmBtn.setOnClickListener{
             val playlistName = binding.playlistName.text?.toString()
-            if (!playlistName.isNullOrEmpty()){
-                db.collection("users")
+            if (!playlistName.isNullOrEmpty()) {
+                val playlistRef = db.collection("users")
                     .document(UserInfo.key)
                     .collection("playlists")
-                    .document(playlistName) // Use playlistName as the document ID
-                    .set(emptyMap<String, Any>()) // Empty map to create an empty document
-                    .addOnSuccessListener { finish() }
+                    .document(playlistName)
+
+                playlistRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            // Document with the given name already exists
+                            Toast.makeText(this, "Playlist already exists!", Toast.LENGTH_LONG).show()
+                            Log.d("checking", "Playlist already exists!")
+                        } else {
+                            // Document does not exist, proceed to create it
+                            playlistRef.set(mapOf("playlistImg" to ""))
+                                .addOnSuccessListener { finish() }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(
+                                        this,
+                                        "Failed To Add Playlist ${e}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                        }
+                    }
                     .addOnFailureListener { e ->
                         Toast.makeText(
                             this,
-                            "Failed To Add Playlist ${e}",
+                            "Error Checking Playlist: ${e}",
                             Toast.LENGTH_LONG
                         ).show()
                     }

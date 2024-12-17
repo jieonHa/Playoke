@@ -56,7 +56,6 @@ class MusicService : Service() {
                 UserInfo.selectedMusic = 0
             }
             Log.d("Firestore", "${UserInfo.selectedMusic}")
-            //.collection("playlists").document(UserInfo.selectedPlaylist)
             db.collection("users").document(UserInfo.key).collection("playlists").document(UserInfo.selectedPlaylist).get()
                 .addOnSuccessListener{ document->
                     if (document.exists()){
