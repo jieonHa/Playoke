@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playoke.databinding.FragmentHomeBinding
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.FirebaseApp
 
@@ -36,35 +37,42 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        // FragmentLibraryBinding을 사용하여 바인딩 초기화
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        drawerLayout = requireActivity().findViewById(R.id.drawer_layout)
 
         // 툴바 설정
         val toolbar: MaterialToolbar = binding.homeToolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
-        // 로고 이미지 클릭 시 이벤트 처리: 드로어
+        val drawerLayout = binding.drawerLayout
+        val navigationView = binding.navView
+
+        // 툴바 내비게이션 아이콘 클릭 시 드로어 열기
         toolbar.setNavigationOnClickListener {
             drawerLayout.openDrawer(Gravity.LEFT)
         }
 
-        // 메뉴 클릭 리스너 설정 (메뉴 아이템 클릭 시 이벤트 처리)
-        toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.mainMenuAdd -> {
-                    val intent = Intent(context, AddToPlaylistActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
+        // 네비게이션 아이템 클릭 이벤트 처리
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            if (menuItem.itemId == R.id.nav_logout) {
+                handleLogout()
+                true
+            } else {
+                false
             }
         }
 
-        setHasOptionsMenu(true)
-
         return binding.root
+    }
+
+    private fun handleLogout() {
+        Toast.makeText(requireContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
+
+        // 로그인 화면으로 이동
+        val intent = Intent(requireContext(), SignIn::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
