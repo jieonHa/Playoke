@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.playoke.databinding.ItemSongBinding
 
-class SongAdapter(private val songs: List<Song>) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
+class SongAdapter(
+    private val songs: List<Song>,
+    private val onSongClick: (Song) -> Unit
+    ) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     class SongViewHolder(private val binding: ItemSongBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(song: Song) {
+        fun bind(song: Song, onSongClick: (Song) -> Unit) {
             binding.textViewTitle.text = song.name
             binding.textViewArtist.text = song.artist
             Glide.with(binding.root.context)
@@ -24,9 +27,9 @@ class SongAdapter(private val songs: List<Song>) : RecyclerView.Adapter<SongAdap
                 Toast.makeText(it.context, "test", Toast.LENGTH_SHORT).show()
             }
 
-            // 아이템 클릭 이벤트 처리
+            // 노래 클릭 시 onSongClick 콜백 호출
             binding.root.setOnClickListener {
-                // 클릭 시 노래 재생
+                onSongClick(song)
             }
         }
     }
@@ -37,8 +40,7 @@ class SongAdapter(private val songs: List<Song>) : RecyclerView.Adapter<SongAdap
     }
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
-        val song = songs[position]
-        holder.bind(song)  // 데이터 바인딩
+        holder.bind(songs[position], onSongClick)
     }
 
     override fun getItemCount(): Int = songs.size

@@ -1,5 +1,6 @@
 package com.example.playoke
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -73,12 +74,28 @@ class PlaylistFragment : Fragment() {
                 }
 
                 // Adapter 설정
-                binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs)
+                binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs) { song ->
+                    // 노래 클릭 시 UserInfo 업데이트
+                    UserInfo.collectionPath = collectionPath
+                    UserInfo.key = documentPath
+                    UserInfo.selectedPlaylist = playlistId
+                    UserInfo.musicName = song.name
+                    UserInfo.musicImgSrc = song.coverImageUrl
+                    UserInfo.artistName = song.artist
+                    UserInfo.playingMusic = "song-1" // 수정
+
+                    UserInfo.selectedMusic = fetchedSongs.indexOf(song)
+
+                    // 노래 재생 관련 처리 추가 가능
+
+                }
+
 
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
+
         // Firestore에서 playlist 데이터 가져오기
         firestore.collection(collectionPath)
             .document(documentPath)
