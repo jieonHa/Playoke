@@ -59,26 +59,46 @@ class EditFragment : Fragment() {
         firestore.collection(collectionPath)
             .document(documentPath)
             .collection("playlists")
-            .document(playlistId)
-            .collection("songs")
+            .document(playlistId) // 예: "Ballard"
             .get()
-            .addOnSuccessListener { documents ->
+            .addOnSuccessListener { document ->
                 val fetchedEdit = mutableListOf<Edit>()
-                for (document in documents) {
-                    val name = document.getString("name") ?: ""
-                    val artist = document.getString("artist") ?: ""
-                    val coverImageUrl = document.getString("img") ?: ""
 
-                    // Firestore 데이터로 Song 객체 생성
-                    fetchedEdit.add(Edit(name, artist, coverImageUrl))
+                if (document != null && document.exists()) {
+                    // 필드에서 노래 ID를 추출
+                    val numberOfSongs = document.getLong("numberOfSongs")?.toInt() ?: 0
+                    val songIds = mutableListOf<String>()
+                    for (i in 1..numberOfSongs) {
+                        document.getString(i.toString())?.let { songIds.add(it) }
+                    }
 
+                    // 각 노래 ID로 musics 컬렉션에서 상세 정보 가져오기
+                    for (songId in songIds) {
+                        firestore.collection("musics")
+                            .document(songId)
+                            .get()
+                            .addOnSuccessListener { songDoc ->
+                                if (songDoc != null && songDoc.exists()) {
+                                    val name = songDoc.getString("name") ?: ""
+                                    val artist = songDoc.getString("artist") ?: ""
+                                    val coverImageUrl = songDoc.getString("img") ?: ""
+                                    // val lyrics = songDoc.getString("lyrics") ?: ""
+
+                                    // Firestore 데이터로 Song 객체 생성
+                                    fetchedEdit.add(Edit(name, artist, coverImageUrl))
+
+                                    // 결과 확인
+                                    Log.d("EditFragment", "Fetched Song: $name, Artist: $artist")
+
+                                    // Adapter 설정
+                                    binding.recyclerViewEdit.adapter = EditAdapter(fetchedEdit)
+                                }
+                            }
+                    }
                 }
-
-                // Adapter 설정
-                binding.recyclerViewEdit.adapter = EditAdapter(fetchedEdit)
             }
-            .addOnFailureListener { exception ->
-                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error fetching playlist or song details", e)
             }
 
         // Firestore에서 playlist 데이터 가져오기

@@ -59,41 +59,53 @@ class PlaylistFragment : Fragment() {
         firestore.collection(collectionPath)
             .document(documentPath)
             .collection("playlists")
-            .document(playlistId)
-            .collection("songs")
+            .document(playlistId) // 예: "Ballard"
             .get()
-            .addOnSuccessListener { documents ->
+            .addOnSuccessListener { document ->
                 val fetchedSongs = mutableListOf<Song>()
-                for (document in documents) {
-                    val name = document.getString("name") ?: ""
-                    val artist = document.getString("artist") ?: ""
-                    val coverImageUrl = document.getString("img") ?: ""
 
-                    // Firestore 데이터로 Song 객체 생성
-                    fetchedSongs.add(Song(name, artist, coverImageUrl))
+                if (document != null && document.exists()) {
+                    // 필드에서 노래 ID를 추출
+                    val numberOfSongs = document.getLong("numberOfSongs")?.toInt() ?: 0
+                    val songIds = mutableListOf<String>()
+                    for (i in 1..numberOfSongs) {
+                        document.getString(i.toString())?.let { songIds.add(it) }
+                    }
+
+                    // 각 노래 ID로 musics 컬렉션에서 상세 정보 가져오기
+                    for (songId in songIds) {
+                        firestore.collection("musics")
+                            .document(songId)
+                            .get()
+                            .addOnSuccessListener { songDoc ->
+                                if (songDoc != null && songDoc.exists()) {
+                                    val name = songDoc.getString("name") ?: ""
+                                    val artist = songDoc.getString("artist") ?: ""
+                                    val coverImageUrl = songDoc.getString("img") ?: ""
+                                    // val lyrics = songDoc.getString("lyrics") ?: ""
+
+                                    // Song 객체 생성
+                                    fetchedSongs.add(Song(name, artist, coverImageUrl))
+
+                                    // 결과 확인
+                                    Log.d("PlaylistFragment", "Fetched Song: $name, Artist: $artist")
+
+                                    // Adapter 설정
+                                    binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs) { song ->
+                                        // 노래 클릭 시 UserInfo 업데이트
+                                        UserInfo.playingMusic = song.name
+                                        UserInfo.selectedMusic = fetchedSongs.indexOf(song) // 선택된 노래의 인덱스를 저장
+                                        Log.d("PlaylistFragment", "Selected song: ${song.name}, Index: ${UserInfo.selectedMusic}")
+
+                                        // 노래 재생 관련 처리 추가 가능
+                                    }
+                                }
+                            }
+                    }
                 }
-
-                // Adapter 설정
-                binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs) { song ->
-                    // 노래 클릭 시 UserInfo 업데이트
-                    UserInfo.collectionPath = collectionPath
-                    UserInfo.key = documentPath
-                    UserInfo.selectedPlaylist = playlistId
-                    UserInfo.musicName = song.name
-                    UserInfo.musicImgSrc = song.coverImageUrl
-                    UserInfo.artistName = song.artist
-                    UserInfo.playingMusic = "song-1" // 수정
-
-                    UserInfo.selectedMusic = fetchedSongs.indexOf(song)
-
-                    // 노래 재생 관련 처리 추가 가능
-
-                }
-
-
             }
-            .addOnFailureListener { exception ->
-                Toast.makeText(context, "Failed to load playlists: ${exception.message}", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error fetching playlist or song details", e)
             }
 
         // Firestore에서 playlist 데이터 가져오기
