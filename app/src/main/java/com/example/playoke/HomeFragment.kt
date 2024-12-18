@@ -25,7 +25,6 @@ import com.google.firebase.FirebaseApp
 class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +46,7 @@ class HomeFragment : Fragment() {
         val drawerLayout = binding.drawerLayout
         val navigationView = binding.navView
 
-        // 툴바 내비게이션 아이콘 클릭 시 드로어 열기
+        // 로고 이미지 클릭 시 이벤트 처리: 드로어
         toolbar.setNavigationOnClickListener {
             drawerLayout.openDrawer(Gravity.LEFT)
         }

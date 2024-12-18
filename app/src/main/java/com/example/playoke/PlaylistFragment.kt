@@ -1,7 +1,10 @@
 package com.example.playoke
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +25,9 @@ class PlaylistFragment : Fragment() {
     private var collectionPath: String = ""
     private var documentPath: String = ""
     private var playlistId: String = ""
+    private var musicService: MusicService? = null
+    private var isBound = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +51,36 @@ class PlaylistFragment : Fragment() {
         return binding.root
     }
 
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as MusicService.LocalBinder
+            musicService = binder.getService()
+            isBound = true
+//            updateMusicDuration()
+//            startSeekBarUpdate()
+//            if (!(musicService?.isPlaying()?:false)){
+//                binding.playPauseBtn.setImageResource(R.drawable.ic_play_circle_outline)
+//            } else{
+//                binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
+//            }
+//            musicService?.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, false)
+//            musicService?.player?.setOnCompletionListener {
+//                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
+//                    Log.d("MusicService", "Track completed. Moving to the next track.")
+//                    musicService?.nextMusic(
+//                        this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar
+//                    )
+//                }
+//            }
+        }
+        override fun onServiceDisconnected(name: ComponentName) {
+            musicService = null
+            isBound = false
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Firestore 초기화
         firestore = FirebaseFirestore.getInstance()
 
@@ -79,25 +112,24 @@ class PlaylistFragment : Fragment() {
                             .get()
                             .addOnSuccessListener { songDoc ->
                                 if (songDoc != null && songDoc.exists()) {
+                                    val id = songId
                                     val name = songDoc.getString("name") ?: ""
                                     val artist = songDoc.getString("artist") ?: ""
                                     val coverImageUrl = songDoc.getString("img") ?: ""
                                     // val lyrics = songDoc.getString("lyrics") ?: ""
 
                                     // Song 객체 생성
-                                    fetchedSongs.add(Song(name, artist, coverImageUrl))
-
-                                    // 결과 확인
-                                    Log.d("PlaylistFragment", "Fetched Song: $name, Artist: $artist")
+                                    fetchedSongs.add(Song(id, name, artist, coverImageUrl))
 
                                     // Adapter 설정
                                     binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs) { song ->
                                         // 노래 클릭 시 UserInfo 업데이트
-                                        UserInfo.playingMusic = song.name
-                                        UserInfo.selectedMusic = fetchedSongs.indexOf(song) // 선택된 노래의 인덱스를 저장
-                                        Log.d("PlaylistFragment", "Selected song: ${song.name}, Index: ${UserInfo.selectedMusic}")
+                                        UserInfo.playingMusic = song.id
+                                        Log.d("PlaylistFragment", "songId: ${song.id}, UserInfo.playingMusic: ${UserInfo.playingMusic}")
 
-                                        // 노래 재생 관련 처리 추가 가능
+                                        // 노래 재생 처리
+                                        //val intent = Intent(context, MusicService::class.java)
+                                        musicService?.startMusic()
                                     }
                                 }
                             }
@@ -168,4 +200,4 @@ class PlaylistFragment : Fragment() {
 
 }
 
-data class Song(val name: String, val artist: String, val coverImageUrl: String)
+data class Song(val id: String, val name: String, val artist: String, val coverImageUrl: String)
