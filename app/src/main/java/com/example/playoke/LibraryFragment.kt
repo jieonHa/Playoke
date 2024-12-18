@@ -28,9 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore
  */
 class LibraryFragment : Fragment() {
 
-    private var columnCount = 1
     lateinit var binding: FragmentLibraryBinding
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var firestore: FirebaseFirestore
 
     // Firestore에서 가져올 플레이리스트 데이터를 담을 리스트
@@ -40,18 +38,29 @@ class LibraryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        // FragmentLibraryBinding을 사용하여 바인딩 초기화
+
         binding = FragmentLibraryBinding.inflate(inflater, container, false)
-        drawerLayout = requireActivity().findViewById(R.id.drawer_layout)
 
         // 툴바 설정
         val toolbar: MaterialToolbar = binding.libraryToolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
+        val drawerLayout = binding.drawerLayout
+        val navigationView = binding.navView
+
         // 로고 이미지 클릭 시 이벤트 처리: 드로어
         toolbar.setNavigationOnClickListener {
             drawerLayout.openDrawer(Gravity.LEFT)
+        }
+
+        // 네비게이션 아이템 클릭 이벤트 처리
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            if (menuItem.itemId == R.id.nav_logout) {
+                handleLogout()
+                true
+            } else {
+                false
+            }
         }
 
         // 메뉴 아이템 클릭 시 이벤트 처리: 플리 추가 화면으로 이동
@@ -71,6 +80,15 @@ class LibraryFragment : Fragment() {
         return binding.root
     }
 
+    private fun handleLogout() {
+        Toast.makeText(requireContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
+
+        // 로그인 화면으로 이동
+        val intent = Intent(requireContext(), SignIn::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
