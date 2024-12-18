@@ -54,7 +54,7 @@ class LibraryFragment : Fragment() {
             drawerLayout.openDrawer(Gravity.LEFT)
         }
 
-        // 메뉴 아이템 클릭 시 이벤트 처리
+        // 메뉴 아이템 클릭 시 이벤트 처리: 플리 추가 화면으로 이동
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.mainMenuAdd -> {
