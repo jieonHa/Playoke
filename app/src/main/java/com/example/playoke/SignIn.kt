@@ -16,7 +16,7 @@ class SignIn : AppCompatActivity() {
         binding = ActivitySignInBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+
 
         binding.toSignUp.setOnClickListener{ // 회원가입으로 이동
             val intent: Intent = Intent(this, SignUp::class.java)
@@ -56,8 +56,12 @@ class SignIn : AppCompatActivity() {
 
         }
 
+        binding.goBackBtn.setOnClickListener{ // 회원가입으로 이동
+            val intent: Intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
