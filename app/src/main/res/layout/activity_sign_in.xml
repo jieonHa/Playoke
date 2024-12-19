@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_margin="25dp"
-        android:src     ="@drawable/playoke" />
+        android:src     ="@drawable/playoke2" />
 
     <EditText
         android:id="@+id/email"
