@@ -43,13 +43,6 @@ class PlaylistAdapter(val context: Context, val data:MutableList<String>, val im
                     docRef.update("numberOfSongs", FieldValue.increment(-1))
                 }
             }
-            /*if (holder.binding.playlistCheckbox.isChecked){
-                docRef.update(mapOf("${number + 1}" to "${UserInfo.playingMusic}"))
-                docRef.update("numberOfSongs", FieldValue.increment(1))
-            } else{
-                docRef.update("${number}", FieldValue.delete())
-                docRef.update("numberOfSongs", FieldValue.increment(-1))
-            }*/
 
         }
 
