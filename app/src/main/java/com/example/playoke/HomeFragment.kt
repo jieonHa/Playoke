@@ -93,10 +93,11 @@ class HomeFragment : Fragment() {
                 val fetchedPlaylists = mutableListOf<HomePlaylist>()
                 for (document in documents) {
                     val playlistId = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
+                    val playlistName = document.getString("title") ?: ""
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(playlistId, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistName, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
@@ -136,10 +137,11 @@ class HomeFragment : Fragment() {
                 val fetchedPlaylists = mutableListOf<HomePlaylist>()
                 for (document in documents) {
                     val playlistId = document.id
+                    val playlistName = document.getString("title") ?: ""
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(playlistId, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistName, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
@@ -179,10 +181,11 @@ class HomeFragment : Fragment() {
                 val fetchedPlaylists = mutableListOf<HomePlaylist>()
                 for (document in documents) {
                     val playlistId = document.id
+                    val playlistName = document.getString("title") ?: ""
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(playlistId, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistName, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
