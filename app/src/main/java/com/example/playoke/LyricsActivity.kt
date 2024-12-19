@@ -42,7 +42,7 @@ class LyricsActivity : AppCompatActivity() {
             }
             musicService?.setMediaPlayer(this@LyricsActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, false)
             musicService?.player?.setOnCompletionListener {
-                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
+                if (musicService?.fetchCurrentPosition() != 0) { // Ensure it was playing before triggering
                     Log.d("MusicService", "Track completed. Moving to the next track.")
                     musicService?.nextMusic(
                         this@LyricsActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, binding.lyrics
@@ -109,7 +109,7 @@ class LyricsActivity : AppCompatActivity() {
         handler?.post(object : Runnable {
             override fun run() {
                 musicService?.let {
-                    val currentPosition = it.getCurrentPosition()
+                    val currentPosition = it.fetchCurrentPosition()
                     binding.seekBar.progress = currentPosition
 
                     // Update elapsed time
