@@ -21,12 +21,9 @@ import java.io.IOException
 
 class MusicService : Service() {
     val db = Firebase.firestore
-    var musicName :String = "Unknown Name"
-    var artistName:String = "Unknown Artist"
-    var imageSrc: String = ""
     private val binder = LocalBinder()
     lateinit var player: MediaPlayer
-    private var currentPosition: Int = 0
+    var currentPosition: Int = 0
 
     inner class LocalBinder : Binder() {
         fun getService(): MusicService = this@MusicService
@@ -95,7 +92,7 @@ class MusicService : Service() {
     }
 
     fun nextMusic(context:Context, musicName:TextView, artistName:TextView, musicImg: ImageView, musicDuration: TextView, seekbar: SeekBar, lyricsContainer:LinearLayout){
-        if(UserInfo.selectedPlaylist!=null){
+
             UserInfo.selectedMusic ++
             if(UserInfo.selectedMusic == UserInfo.playlistLength){
                 UserInfo.selectedMusic = 0
@@ -114,11 +111,9 @@ class MusicService : Service() {
                     }
                 }
                 .addOnFailureListener{e->Log.d("error", "error ${e}")}
-        }
     }
 
     fun previousMusic(context:Context, musicName:TextView, artistName:TextView, musicImg: ImageView, musicDuration: TextView, seekbar:SeekBar){
-        if(UserInfo.selectedPlaylist!=null){
             UserInfo.selectedMusic --
             if(UserInfo.selectedMusic < 0){
                 UserInfo.selectedMusic = UserInfo.playlistLength - 1
@@ -137,10 +132,9 @@ class MusicService : Service() {
                     }
                 }
                 .addOnFailureListener{e->Log.d("error", "error ${e}")}
-        }
     }
 
-    fun getCurrentPosition(): Int {
+    fun fetchCurrentPosition(): Int {
         return player.currentPosition
     }
 
@@ -195,6 +189,7 @@ class MusicService : Service() {
     }
 
     fun setMediaPlayer(context: Context, musicName:TextView, artistName:TextView, musicImg: ImageView, musicDuration:TextView, seekbar:SeekBar, startPlaying:Boolean){
+        Log.d("testing","${seekbar.progress} is the progress")
         db.collection("musics").document(UserInfo.playingMusic).get()
             .addOnSuccessListener{ document->
                 Log.d("test", "yyy")

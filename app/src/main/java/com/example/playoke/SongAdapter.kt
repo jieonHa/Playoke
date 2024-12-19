@@ -23,8 +23,7 @@ class SongAdapter(
                 .into(binding.imageViewCover)
 
             binding.moreButton.setOnClickListener {
-                // Handle 'more' button click
-                Toast.makeText(it.context, "test", Toast.LENGTH_SHORT).show()
+                // 추가 가능
             }
 
             // 노래 클릭 시 onSongClick 콜백 호출
