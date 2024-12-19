@@ -125,7 +125,6 @@ class MainActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 stopSeekBarUpdate() // Pause updates while user interacts
             }
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 startSeekBarUpdate() // Resume updates after interaction
             }
@@ -151,44 +150,17 @@ class MainActivity : AppCompatActivity() {
         handler?.removeCallbacksAndMessages(null)
     }
 
-
     private fun setFragment(tag: String, fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
+
+        // 백 스택에 쌓인 모든 프래그먼트 제거
+        if (manager.backStackEntryCount > 0) {
+            manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
+        // 새 프래그먼트를 교체
         val fragTransaction = manager.beginTransaction()
-
-        if (manager.findFragmentByTag(tag) == null){
-            fragTransaction.add(R.id.fragmentContainer, fragment, tag)
-        }
-
-        val home = manager.findFragmentByTag(TAG_HOME)
-        val search = manager.findFragmentByTag(TAG_SEARCH)
-        val library = manager.findFragmentByTag(TAG_LIBRARY)
-
-        if (home != null){
-            fragTransaction.hide(home)
-        }
-        if (search != null) {
-            fragTransaction.hide(search)
-        }
-        if (library != null){
-            fragTransaction.hide(library)
-        }
-
-        if (tag == TAG_HOME) {
-            if (home != null) {
-                fragTransaction.show(home)
-            }
-        }
-        else if (tag == TAG_SEARCH) {
-            if (search!=null){
-                fragTransaction.show(search)
-            }
-        }
-        else if (tag == TAG_LIBRARY){
-            if (library != null){
-                fragTransaction.show(library)
-            }
-        }
+        fragTransaction.replace(R.id.fragmentContainer, fragment, tag)
         fragTransaction.commitAllowingStateLoss()
     }
 }
