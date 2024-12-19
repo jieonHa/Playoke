@@ -74,6 +74,7 @@ class PlaylistFragment : Fragment() {
                     }
 
                     // 각 노래 ID로 musics 컬렉션에서 상세 정보 가져오기
+                    var index = 1
                     for (songId in songIds) {
                         firestore.collection("musics")
                             .document(songId)
@@ -87,14 +88,17 @@ class PlaylistFragment : Fragment() {
                                     // val lyrics = songDoc.getString("lyrics") ?: ""
 
                                     // Song 객체 생성
-                                    fetchedSongs.add(Song(id, name, artist, coverImageUrl))
+                                    fetchedSongs.add(Song(id, name, artist, coverImageUrl, index))
+
+                                    // 인덱스 증가
+                                    index++
 
                                     // Adapter 설정
                                     binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs) { song ->
 
                                         // 노래 클릭 시 UserInfo 업데이트
                                         UserInfo.playlistLength = numberOfSongs
-                                        UserInfo.selectedMusic = 0
+                                        UserInfo.selectedMusic = song.index
                                         UserInfo.playingMusic = song.id
                                         UserInfo.musicName = song.name
                                         UserInfo.musicImgSrc = song.coverImageUrl
@@ -102,13 +106,9 @@ class PlaylistFragment : Fragment() {
                                         UserInfo.selectedPlaylist = playlistId
                                         // 업데이트된 UserInfo 로그 메시지 출력
                                         Log.d("PlaylistFragment", "UserInfo updated: " +
-                                                "playingMusic=${UserInfo.playingMusic}, " +
-                                                "musicName=${UserInfo.musicName}, " +
-                                                "musicImgSrc=${UserInfo.musicImgSrc}, " +
-                                                "artistName=${UserInfo.artistName}, " +
+                                                "selectedMusic=${UserInfo.selectedMusic}" +
                                                 "selectedPlaylist=${UserInfo.selectedPlaylist}, " +
-                                                "playlistLength=${UserInfo.playlistLength}, " +
-                                                "selectedMusic=${UserInfo.selectedMusic}"
+                                                "playlistLength=${UserInfo.playlistLength}, "
                                         )
 
                                         val intent: Intent = Intent(context, MusicActivity::class.java)
@@ -184,4 +184,4 @@ class PlaylistFragment : Fragment() {
 
 }
 
-data class Song(val id: String, val name: String, val artist: String, val coverImageUrl: String)
+data class Song(val id: String, val name: String, val artist: String, val coverImageUrl: String, val index: Int)
