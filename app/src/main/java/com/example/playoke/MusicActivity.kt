@@ -25,6 +25,41 @@ class MusicActivity : AppCompatActivity() {
             val binder = service as MusicService.LocalBinder
             musicService = binder.getService()
             isBound = true
+
+            val isRestart = intent.getBooleanExtra("restart", false)
+            Log.d("testing", "${isRestart}")
+            if (isRestart) {
+                var position = musicService?.fetchCurrentPosition()
+                Log.d("testing", "Current position before reset: $position")
+
+                // Stop and reset the player
+                musicService?.player?.stop()
+                musicService?.player?.prepare() // Re-prepare the player
+                musicService?.player?.seekTo(0) // Seek to the beginning
+
+                // Reset other components
+                musicService?.currentPosition = 0
+                stopSeekBarUpdate()
+                binding.seekBar.progress = 0
+                startSeekBarUpdate()
+                binding.seekBar.invalidate()
+
+                position = musicService?.fetchCurrentPosition()
+                Log.d("testing", "Current position after reset: $position")
+                Log.d("testing", "Seekbar Progress: ${binding.seekBar.progress}, MediaPlayer Progress: ${musicService?.player?.currentPosition}")
+
+                musicService?.let {
+                    it.setMediaPlayer(
+                        this@MusicActivity,
+                        binding.musicName,
+                        binding.artistName,
+                        binding.musicImg,
+                        binding.musicDuration,
+                        binding.seekBar,
+                        true
+                    )
+                }
+            }
             updateMusicDuration()
             startSeekBarUpdate()
             if (!(musicService?.isPlaying()?:false)){
@@ -32,9 +67,10 @@ class MusicActivity : AppCompatActivity() {
             } else{
                 binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
             }
+
             musicService?.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, false)
             musicService?.player?.setOnCompletionListener {
-                if (musicService?.fetchCurrentPosition() != 0) { // Ensure it was playing before triggering
+                 if (musicService?.fetchCurrentPosition() != 0) { // Ensure it was playing before triggering
                     Log.d("MusicService", "Track completed. Moving to the next track.")
                     musicService?.nextMusic(
                         this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar
@@ -52,20 +88,6 @@ class MusicActivity : AppCompatActivity() {
         super.onResume()
         binding = ActivityMusicBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Retrieve the "restart" extra from the Intent
-        val isRestart = intent.getBooleanExtra("restart", false)
-
-        if (isRestart) {
-            musicService?.currentPosition = 0
-            binding.seekBar.progress = 0
-            binding.seekBar.invalidate()
-            musicService?.seekTo(0)
-            Log.d("testing", "${binding.seekBar.progress}")
-            musicService?.let {
-                it.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, true)
-            }
-        }
 
         handler = Handler(Looper.getMainLooper())
 

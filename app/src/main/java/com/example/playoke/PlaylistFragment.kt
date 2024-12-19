@@ -56,22 +56,6 @@ class PlaylistFragment : Fragment() {
             val binder = service as MusicService.LocalBinder
             musicService = binder.getService()
             isBound = true
-//            updateMusicDuration()
-//            startSeekBarUpdate()
-//            if (!(musicService?.isPlaying()?:false)){
-//                binding.playPauseBtn.setImageResource(R.drawable.ic_play_circle_outline)
-//            } else{
-//                binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
-//            }
-//            musicService?.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, false)
-//            musicService?.player?.setOnCompletionListener {
-//                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
-//                    Log.d("MusicService", "Track completed. Moving to the next track.")
-//                    musicService?.nextMusic(
-//                        this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar
-//                    )
-//                }
-//            }
         }
         override fun onServiceDisconnected(name: ComponentName) {
             musicService = null
