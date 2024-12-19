@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             musicService?.setMediaPlayer(this@MainActivity, binding.songTitle, binding.songArtist, binding.songImage, binding.seekBar, false)
             Log.d("Testing", "Service Started")
             musicService?.player?.setOnCompletionListener {
-                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
+                if (musicService?.fetchCurrentPosition() != 0) { // Ensure it was playing before triggering
                     Log.d("MusicService", "Track completed. Moving to the next track.")
                     musicService?.nextMusic(
                         this@MainActivity,
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
         handler?.post(object : Runnable {
             override fun run() {
                 musicService?.let {
-                    val currentPosition = it.getCurrentPosition()
+                    val currentPosition = it.fetchCurrentPosition()
                     binding.seekBar.progress = currentPosition
                 }
                 handler?.postDelayed(this, 1000) // Update every second

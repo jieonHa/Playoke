@@ -34,7 +34,7 @@ class MusicActivity : AppCompatActivity() {
             }
             musicService?.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, false)
             musicService?.player?.setOnCompletionListener {
-                if (musicService?.getCurrentPosition() != 0) { // Ensure it was playing before triggering
+                if (musicService?.fetchCurrentPosition() != 0) { // Ensure it was playing before triggering
                     Log.d("MusicService", "Track completed. Moving to the next track.")
                     musicService?.nextMusic(
                         this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar
@@ -48,31 +48,57 @@ class MusicActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         binding = ActivityMusicBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Retrieve the "restart" extra from the Intent
+        val isRestart = intent.getBooleanExtra("restart", false)
+
+        if (isRestart) {
+            musicService?.currentPosition = 0
+            binding.seekBar.progress = 0
+            binding.seekBar.invalidate()
+            musicService?.seekTo(0)
+            Log.d("testing", "${binding.seekBar.progress}")
+            musicService?.let {
+                it.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, true)
+            }
+        }
 
         handler = Handler(Looper.getMainLooper())
 
         val intent = Intent(this, MusicService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        musicService?.setMediaPlayer(this@MusicActivity, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar, true)
 
         binding.idBtnDismiss.setOnClickListener{
             val intent: Intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
         binding.skipPrevious.setOnClickListener{
-            musicService?.previousMusic(this, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar)
-            binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
+            if(UserInfo.selectedPlaylist!="") {
+                musicService?.previousMusic(
+                    this,
+                    binding.musicName,
+                    binding.artistName,
+                    binding.musicImg,
+                    binding.musicDuration,
+                    binding.seekBar
+                )
+                binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
+            }
         }
         binding.addToPlaylist.setOnClickListener{
             val intent:Intent = Intent(this,AddToPlaylistActivity::class.java)
             startActivity(intent)
         }
         binding.skipNext.setOnClickListener{
-            musicService?.nextMusic(this, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar)
-            binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
+            if(UserInfo.selectedPlaylist!=""){
+                musicService?.nextMusic(this, binding.musicName, binding.artistName, binding.musicImg, binding.musicDuration, binding.seekBar)
+                binding.playPauseBtn.setImageResource(R.drawable.ic_pause_circle_outline)
+            }
         }
         binding.lyrics.setOnClickListener{
             val intent: Intent = Intent(this, LyricsActivity::class.java)
@@ -114,7 +140,7 @@ class MusicActivity : AppCompatActivity() {
         handler?.post(object : Runnable {
             override fun run() {
                 musicService?.let {
-                    val currentPosition = it.getCurrentPosition()
+                    val currentPosition = it.fetchCurrentPosition()
                     binding.seekBar.progress = currentPosition
 
                     // Update elapsed time
