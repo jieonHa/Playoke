@@ -73,6 +73,9 @@ class PlaylistFragment : Fragment() {
             .get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
+                    // 기존 데이터 초기화
+                    fetchedSongs.clear()
+
                     // 필드에서 노래 ID를 추출
                     val numberOfSongs = document.getLong("numberOfSongs")?.toInt() ?: 0
                     val songIds = mutableListOf<String>()
@@ -143,10 +146,11 @@ class PlaylistFragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val playlistId = playlistId
+                    val playlistName = document.getString("title") ?: ""
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // 이름 설정
-                    binding.tvPlaylistName.text = playlistId
+                    binding.tvPlaylistName.text = playlistName
 
                     // 이미지 설정
                     if (coverImageUrl.isNotEmpty()) {

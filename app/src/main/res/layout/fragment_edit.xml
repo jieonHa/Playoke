@@ -29,6 +29,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"/>
         <Button
+            android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="저장"
@@ -77,6 +78,7 @@
                     android:textColor="@android:color/darker_gray"
                     android:gravity="center"/>
                 <EditText
+                    android:id="@+id/etPlaylistName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="플레이리스트 이름 변경"

@@ -59,7 +59,7 @@ class EditFragment : Fragment() {
         firestore.collection(collectionPath)
             .document(documentPath)
             .collection("playlists")
-            .document(playlistId) // 예: "Ballard"
+            .document(playlistId)
             .get()
             .addOnSuccessListener { document ->
                 val fetchedEdit = mutableListOf<Edit>()
@@ -131,6 +131,35 @@ class EditFragment : Fragment() {
         // btnBack 버튼 클릭 이벤트 처리
         binding.btnBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        // btnSave 버튼 클릭 이벤트 처리
+        binding.btnSave.setOnClickListener {
+            val newPlaylistName = binding.etPlaylistName.text.toString().trim()
+
+            if (newPlaylistName.isNotEmpty()) {
+                // Firestore에서 플레이리스트 이름 업데이트
+                firestore.collection(collectionPath)
+                    .document(documentPath)
+                    .collection("playlists")
+                    .document(playlistId)
+                    .update("title", newPlaylistName)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "변경사항이 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+                        // 변경된 이름을 UI에 반영
+                        binding.etPlaylistName.setText(newPlaylistName)
+
+                        // 이전 프래그먼트로 이동
+                        requireActivity().supportFragmentManager.popBackStack()
+                    }
+                    .addOnFailureListener { exception ->
+                        Toast.makeText(context, "저장에 실패했습니다: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                // 이전 프래그먼트로 이동
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
     }
 
