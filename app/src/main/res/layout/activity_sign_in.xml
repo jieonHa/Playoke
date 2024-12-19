@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:clickable="true"
-            android:text="비밀번호 찾기" />
+            android:text="비밀번호 재설정" />
 
         <TextView
             android:id="@+id/to_sign_up"

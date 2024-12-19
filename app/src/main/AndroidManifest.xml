@@ -20,6 +20,16 @@
         android:theme="@style/Theme.Playoke"
         tools:targetApi="31">
         <activity
+            android:name=".pwReset"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
+        <activity
             android:name=".placeholder.AuthActivity"
             android:exported="false" />
         <activity
@@ -27,8 +37,7 @@
             android:exported="false" />
         <activity
             android:name=".LogoActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
 
         <service
             android:name=".MusicService"
@@ -42,29 +51,21 @@
             android:name=".SignUp"
             android:exported="true"
             android:parentActivityName=".SignIn">
-
             />
         </activity>
         <activity
             android:name=".SignIn"
             android:exported="true"
             android:parentActivityName=".MainActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+
         </activity>
-        <activity
-            android:name=".pwFinding"
-            android:exported="false"
-            android:parentActivityName=".SignIn"/>
         <activity
             android:name=".AccessPermission"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.Playoke"></activity>
+            android:theme="@style/Base.Theme.Playoke" />
         <activity
             android:name=".LyricsActivity"
             android:exported="false" />
