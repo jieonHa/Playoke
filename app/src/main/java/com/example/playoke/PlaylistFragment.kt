@@ -19,15 +19,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class PlaylistFragment : Fragment() {
 
-    private var columnCount = 1
     lateinit var binding: FragmentPlaylistBinding
     private lateinit var firestore: FirebaseFirestore
     private var collectionPath: String = ""
     private var documentPath: String = ""
     private var playlistId: String = ""
-    private var musicService: MusicService? = null
-    private var isBound = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,18 +45,6 @@ class PlaylistFragment : Fragment() {
         Log.d("PlaylistFragment", "Arguments: $arguments")
 
         return binding.root
-    }
-
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            val binder = service as MusicService.LocalBinder
-            musicService = binder.getService()
-            isBound = true
-        }
-        override fun onServiceDisconnected(name: ComponentName) {
-            musicService = null
-            isBound = false
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,13 +91,29 @@ class PlaylistFragment : Fragment() {
 
                                     // Adapter 설정
                                     binding.recyclerViewSongs.adapter = SongAdapter(fetchedSongs) { song ->
-                                        // 노래 클릭 시 UserInfo 업데이트
-                                        UserInfo.playingMusic = song.id
-                                        Log.d("PlaylistFragment", "songId: ${song.id}, UserInfo.playingMusic: ${UserInfo.playingMusic}")
 
-                                        // 노래 재생 처리
-                                        //val intent = Intent(context, MusicService::class.java)
-                                        musicService?.startMusic()
+                                        // 노래 클릭 시 UserInfo 업데이트
+                                        UserInfo.playlistLength = numberOfSongs
+                                        UserInfo.selectedMusic = 0
+                                        UserInfo.playingMusic = song.id
+                                        UserInfo.musicName = song.name
+                                        UserInfo.musicImgSrc = song.coverImageUrl
+                                        UserInfo.artistName = song.artist
+                                        UserInfo.selectedPlaylist = playlistId
+                                        // 업데이트된 UserInfo 로그 메시지 출력
+                                        Log.d("PlaylistFragment", "UserInfo updated: " +
+                                                "playingMusic=${UserInfo.playingMusic}, " +
+                                                "musicName=${UserInfo.musicName}, " +
+                                                "musicImgSrc=${UserInfo.musicImgSrc}, " +
+                                                "artistName=${UserInfo.artistName}, " +
+                                                "selectedPlaylist=${UserInfo.selectedPlaylist}, " +
+                                                "playlistLength=${UserInfo.playlistLength}, " +
+                                                "selectedMusic=${UserInfo.selectedMusic}"
+                                        )
+
+                                        val intent: Intent = Intent(context, MusicActivity::class.java)
+                                        intent.putExtra("restart",true)
+                                        context?.startActivity(intent)
                                     }
                                 }
                             }
