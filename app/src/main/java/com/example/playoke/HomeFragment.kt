@@ -97,7 +97,7 @@ class HomeFragment : Fragment() {
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(playlistName, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistId, playlistName, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
@@ -141,7 +141,7 @@ class HomeFragment : Fragment() {
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(playlistName, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistId, playlistName, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
@@ -185,7 +185,7 @@ class HomeFragment : Fragment() {
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 HomePlaylist 객체 생성
-                    fetchedPlaylists.add(HomePlaylist(playlistName, coverImageUrl))
+                    fetchedPlaylists.add(HomePlaylist(playlistId, playlistName, coverImageUrl))
                     Log.d("Firestore", "Fetched Playlists: $fetchedPlaylists")
                 }
 
@@ -231,4 +231,4 @@ class HomeFragment : Fragment() {
     }
 }
 
-data class HomePlaylist(val title: String, val coverImageUrl: String)
+data class HomePlaylist(val playlistId: String, val title: String, val coverImageUrl: String)

@@ -34,7 +34,7 @@ class LibraryPlaylistAdapter(
 
         // 아이템 클릭 이벤트
         holder.itemView.setOnClickListener {
-            onItemClick(playlist.title) // 클릭 시 플레이리스트 ID 전달
+            onItemClick(playlist.playlistId) // 클릭 시 플레이리스트 ID 전달
         }
     }
 
