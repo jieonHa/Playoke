@@ -109,11 +109,12 @@ class LibraryFragment : Fragment() {
                 val fetchedPlaylists = mutableListOf<LibraryPlaylist>()
                 for (document in documents) {
                     val playlistId = document.id  // 컬렉션 하위 문서의 ID를 타이틀로 사용
+                    val playlistName = document.getString("title") ?: ""
                     val numberOfSongs = document.getLong("numberOfSongs")?.toInt() ?: 0
                     val coverImageUrl = document.getString("playlistImg") ?: ""
 
                     // Firestore 데이터로 LibraryPlaylist 객체 생성
-                    fetchedPlaylists.add(LibraryPlaylist(playlistId, numberOfSongs, coverImageUrl))
+                    fetchedPlaylists.add(LibraryPlaylist(playlistId, playlistName, numberOfSongs, coverImageUrl))
                 }
 
                 // Adapter 설정
@@ -169,5 +170,5 @@ class LibraryFragment : Fragment() {
     }
 }
 
-data class LibraryPlaylist(val title: String, val numberOfSongs: Int, val coverImageUrl: String)
+data class LibraryPlaylist(val playlistId:String, val title: String, val numberOfSongs: Int, val coverImageUrl: String)
 
